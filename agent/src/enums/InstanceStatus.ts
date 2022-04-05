@@ -1,0 +1,7 @@
+export enum InstanceStatusType {
+  STOPPED = "STOPPED",
+  STARTING = "STARTING",
+  RUNNING = "RUNNING",
+  STOPPING = "STOPPING",
+  PROVISIONING = "PROVISIONING",
+}

@@ -1,0 +1,26 @@
+{
+  "name": "gameserveragent",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "setup": "ts-node src/setup.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@rauschma/stringio": "^1.4.0",
+    "@types/node": "^16.10.1",
+    "@types/sqlite3": "^3.1.7",
+    "@types/ws": "^8.2.0",
+    "dotenv": "^10.0.0",
+    "public-ip": "^4.0.4",
+    "socket.io-client": "^4.3.2",
+    "sqlite3": "^5.0.2",
+    "systeminformation": "^5.9.4",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.3",
+    "ws": "^8.2.3"
+  }
+}
