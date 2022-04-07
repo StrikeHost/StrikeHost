@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "start:backend": "cd backend && yarn start",
+    "start:frontend": "cd frontend && yarn start",
+    "start:agent": "cd agent && yarn start",
+    "start": "yarn start:backend & yarn start:frontend"
+  }
+}
