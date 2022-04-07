@@ -2,6 +2,7 @@ export interface Instance {
   readonly id: string;
   port: number;
   status: InstanceStatusType;
+  cpus: number;
   memory: number;
   storage: number;
   image: Image;

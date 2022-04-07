@@ -38,7 +38,11 @@ export class Instance {
   }
 
   public provision() {
-    this.process.provision();
+    this.process.provision(
+      this.instance.cpus,
+      this.instance.memory,
+      this.instance.storage
+    );
     this.changeState(InstanceStatusType.STOPPED);
   }
 
