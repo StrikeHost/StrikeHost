@@ -18,6 +18,11 @@ declare global {
 
 dotenv.config();
 
+if (process.env.NODE_ENV !== "development") {
+  const Bugsnag = require("@bugsnag/js");
+  Bugsnag.start({ apiKey: "0f1fb96b2e05419fbc9b7cd03c9f3b97" });
+}
+
 Database.init();
 initRoutes();
 

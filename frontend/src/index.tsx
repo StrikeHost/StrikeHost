@@ -9,10 +9,12 @@ import BugsnagPluginReact from "@bugsnag/plugin-react";
 import App from "./App";
 import { rootReducer } from "redux/reducers/RootReducer";
 
-Bugsnag.start({
-  apiKey: "db3f0b9b86a138caccfb702fd123a187",
-  plugins: [new BugsnagPluginReact()],
-});
+if (process.env.NODE_ENV !== "development") {
+  Bugsnag.start({
+    apiKey: "db3f0b9b86a138caccfb702fd123a187",
+    plugins: [new BugsnagPluginReact()],
+  });
+}
 
 export const store = createStore(rootReducer);
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
