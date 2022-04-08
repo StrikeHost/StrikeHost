@@ -24,6 +24,8 @@ import { AgentSecretModule } from './agent-secret/agent-secret.module';
 import { ImageVersionModule } from './image-version/image-version.module';
 import { ResourceAllocation } from './resource-allocation/resource-allocation.entity';
 import { ResourceAllocationModule } from './resource-allocation/resource-allocation.module';
+import { AdminController } from './admin/admin.controller';
+import { GameController } from './admin/game/game.controller';
 
 @Module({
   imports: [
@@ -61,7 +63,7 @@ import { ResourceAllocationModule } from './resource-allocation/resource-allocat
     AgentSecretModule,
     EventModule,
   ],
-  controllers: [],
+  controllers: [AdminController, GameController],
   providers: [],
 })
 export class AppModule {
