@@ -28,6 +28,7 @@ import { AdminController } from './admin/admin.controller';
 import { GameController } from './admin/game/game.controller';
 import { GameService } from './admin/game/game.service';
 import { GameModule as AdminGameModule } from './admin/game/game.module';
+import { ImageModule as AdminImageModule } from './admin/image/image.module';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { GameModule as AdminGameModule } from './admin/game/game.module';
     AgentSecretModule,
     EventModule,
     AdminGameModule,
+    AdminImageModule,
   ],
   controllers: [AdminController],
   providers: [],
