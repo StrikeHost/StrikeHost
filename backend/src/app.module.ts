@@ -26,6 +26,8 @@ import { ResourceAllocation } from './resource-allocation/resource-allocation.en
 import { ResourceAllocationModule } from './resource-allocation/resource-allocation.module';
 import { AdminController } from './admin/admin.controller';
 import { GameController } from './admin/game/game.controller';
+import { GameService } from './admin/game/game.service';
+import { GameModule as AdminGameModule } from './admin/game/game.module';
 
 @Module({
   imports: [
@@ -62,8 +64,9 @@ import { GameController } from './admin/game/game.controller';
     AgentModule,
     AgentSecretModule,
     EventModule,
+    AdminGameModule,
   ],
-  controllers: [AdminController, GameController],
+  controllers: [AdminController],
   providers: [],
 })
 export class AppModule {
