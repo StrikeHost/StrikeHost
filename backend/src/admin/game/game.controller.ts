@@ -1,11 +1,11 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { AdminGuard } from 'src/auth/guards/admin.guard';
 import { CreateGameDTO } from './dto/create-game.dto';
 import { CreateImageDto } from './dto/create-image.dto';
 import { GameService } from './game.service';
 
 @Controller('admin/game')
-@UseGuards(JwtAuthGuard)
+@UseGuards(AdminGuard)
 export class GameController {
   constructor(private gameService: GameService) {}
 
@@ -24,7 +24,7 @@ export class GameController {
 
   @Get(':gameId')
   async GetGame(@Param('gameId') gameId: string) {
-    return await this.gameService.getGame(gameId);
+    return await this.gameService.getGame(gameId, ['images']);
   }
 
   @Post(':gameId')

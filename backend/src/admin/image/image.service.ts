@@ -20,8 +20,8 @@ export class ImageService {
    *
    * @param {string} imageId
    */
-  async getImage(imageId: string): Promise<Image> {
-    const image = await this.imageRepository.findOne(imageId);
+  async getImage(imageId: string, relations?: string[]): Promise<Image> {
+    const image = await this.imageRepository.findOne(imageId, { relations });
 
     if (!image) {
       throw new NotFoundException('Image not found!');
@@ -59,8 +59,13 @@ export class ImageService {
    * @param {string} imageVersionId
    * @returns {ImageVersion}
    */
-  async getImageVersion(imageVersionId: string): Promise<ImageVersion> {
-    const imageVersion = this.imageVersionRepository.findOne(imageVersionId);
+  async getImageVersion(
+    imageVersionId: string,
+    relations?: string[],
+  ): Promise<ImageVersion> {
+    const imageVersion = this.imageVersionRepository.findOne(imageVersionId, {
+      relations,
+    });
 
     if (!imageVersion) {
       throw new NotFoundException('Image version not found!');
@@ -87,6 +92,28 @@ export class ImageService {
     imageVersion.name = name;
     imageVersion.arguments = args;
     imageVersion.image = image;
+    await imageVersion.save();
+
+    return imageVersion;
+  }
+
+  /**
+   * Updates an image version
+   *
+   * @param {string} imageVersionId
+   * @param {CreateImageVersionDTO} updateImageVersionDto
+   * @returns
+   */
+  async updateImageVersion(
+    imageVersionId: string,
+    updateImageVersionDto: CreateImageVersionDTO,
+  ): Promise<ImageVersion> {
+    const imageVersion = await this.getImageVersion(imageVersionId);
+
+    const { name, arguments: args } = updateImageVersionDto;
+
+    imageVersion.name = name;
+    imageVersion.arguments = args;
     await imageVersion.save();
 
     return imageVersion;

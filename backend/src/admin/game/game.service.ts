@@ -24,8 +24,8 @@ export class GameService {
    * @param {string} gameId
    * @returns {Game}
    */
-  async getGame(gameId: string): Promise<Game> {
-    const game = await this.gameRepository.findOne(gameId);
+  async getGame(gameId: string, relations?: string[]): Promise<Game> {
+    const game = await this.gameRepository.findOne(gameId, { relations });
 
     if (!game) {
       throw new NotFoundException();

@@ -9,7 +9,7 @@ export class ImageController {
 
   @Get(':imageId')
   async GetImage(@Param('imageId') imageId: string) {
-    const image = await this.imageService.getImage(imageId);
+    const image = await this.imageService.getImage(imageId, ['versions']);
 
     return image;
   }
@@ -29,7 +29,9 @@ export class ImageController {
     @Param('imageId') imageId: string,
     @Param('versionId') versionId: string,
   ) {
-    const imageVersion = await this.imageService.getImageVersion(versionId);
+    const imageVersion = await this.imageService.getImageVersion(versionId, [
+      'image',
+    ]);
 
     return imageVersion;
   }
@@ -42,6 +44,20 @@ export class ImageController {
     const imageVersion = await this.imageService.createImageVersion(
       imageId,
       createImageVersionDto,
+    );
+
+    return imageVersion;
+  }
+
+  @Post(':imageId/version/:versionId')
+  async UpdateImageVersion(
+    @Param('imageId') imageId: string,
+    @Param('versionId') versionId: string,
+    @Body() updateImageVersionDto: CreateImageVersionDTO,
+  ) {
+    const imageVersion = await this.imageService.updateImageVersion(
+      versionId,
+      updateImageVersionDto,
     );
 
     return imageVersion;

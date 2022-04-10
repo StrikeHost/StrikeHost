@@ -29,6 +29,10 @@ import { GameController } from './admin/game/game.controller';
 import { GameService } from './admin/game/game.service';
 import { GameModule as AdminGameModule } from './admin/game/game.module';
 import { ImageModule as AdminImageModule } from './admin/image/image.module';
+import { InstanceModule as AdminInstanceModule } from './admin/instance/instance.module';
+import { UserModule as AdminUserModule } from './admin/user/user.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -67,9 +71,16 @@ import { ImageModule as AdminImageModule } from './admin/image/image.module';
     EventModule,
     AdminGameModule,
     AdminImageModule,
+    AdminInstanceModule,
+    AdminUserModule,
   ],
   controllers: [AdminController],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {
   constructor(private connection: Connection) {}

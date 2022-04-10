@@ -9,17 +9,15 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { getRepository } from 'typeorm';
 import { User } from './user.entity';
 
 @Controller('user')
-@UseGuards(JwtAuthGuard)
 export class UserController {
   @Get()
   async get(@Req() req) {
-    const { password, ...user } = req.user;
-    return user;
+    return req.user;
   }
 
   @Post('account/details')
