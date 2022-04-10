@@ -33,6 +33,7 @@ import { InstanceModule as AdminInstanceModule } from './admin/instance/instance
 import { UserModule as AdminUserModule } from './admin/user/user.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -69,10 +70,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
     AgentModule,
     AgentSecretModule,
     EventModule,
-    AdminGameModule,
-    AdminImageModule,
-    AdminInstanceModule,
-    AdminUserModule,
+    AdminModule,
   ],
   controllers: [AdminController],
   providers: [
