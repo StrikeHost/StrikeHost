@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Req,
 } from '@nestjs/common';
 import { AgentService } from 'src/agent/agent.service';
 import { CreateAgentDTO } from './dto/create-agent.dto';
@@ -77,7 +78,9 @@ export class AgentController {
   }
 
   @Post(':agentId/secret')
-  async AddAgentSecret(@Param('agentId') agentId: string) {
-    // Do something
+  async AddAgentSecret(@Req() req, @Param('agentId') agentId: string) {
+    const secret = await this.agentService.createAgentSecret(agentId, req.user);
+
+    return { token: secret };
   }
 }

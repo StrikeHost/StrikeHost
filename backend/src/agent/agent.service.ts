@@ -1,8 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateAgentDTO } from 'src/admin/agent/dto/create-agent.dto';
+import { AgentSecret } from 'src/agent-secret/agent-secret.entity';
+import { AuthService } from 'src/auth/auth.service';
 import { Instance } from 'src/instance/instance.entity';
 import { InstanceRepository } from 'src/instance/instance.repository';
+import { User } from 'src/user/user.entity';
 import { Agent } from './agent.entity';
 import { AgentRepository } from './agent.repository';
 
@@ -13,6 +16,7 @@ export class AgentService {
     private agentRepository: AgentRepository,
     @InjectRepository(InstanceRepository)
     private instanceRepository: InstanceRepository,
+    private jwtTokenService: AuthService,
   ) {}
 
   /**
@@ -84,6 +88,27 @@ export class AgentService {
     });
 
     return instances;
+  }
+
+  /**
+   * Creates a new secret for an agent
+   *
+   * @param {string} agentId
+   * @param {User} user
+   * @returns {Promise<string>}
+   */
+  async createAgentSecret(agentId: string, user: User): Promise<string> {
+    const agent = await this.getAgent(agentId);
+
+    const agentSecret = new AgentSecret();
+    agentSecret.agent = agent;
+    agentSecret.created_by = user;
+
+    const token = await this.jwtTokenService.loginAgent(agent);
+    agentSecret.secret = token;
+    await agentSecret.save();
+
+    return token;
   }
 
   /**
