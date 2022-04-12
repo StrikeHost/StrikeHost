@@ -26,6 +26,9 @@ export class Instance extends BaseEntity {
   status: string;
 
   @Column()
+  cpus: number;
+
+  @Column()
   memory: number;
 
   @Column()
