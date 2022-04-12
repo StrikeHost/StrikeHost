@@ -24,16 +24,14 @@ export class InstanceRepository extends Repository<Instance> {
     agent: Agent,
     resource: ResourceAllocation,
   ): Promise<Instance> {
-    const { game_id, image_id, version_id } = createInstanceDto;
-
-    const requestedMemory = 1024;
-    const requestedStorage = 10;
+    const { image_id, version_id } = createInstanceDto;
 
     const instance = new Instance();
     instance.image = await this.imageRepository.findOne(image_id);
     instance.user = user;
-    instance.memory = requestedMemory;
-    instance.storage = requestedStorage;
+    instance.cpus = resource.cpus;
+    instance.memory = resource.memory;
+    instance.storage = resource.storage;
     instance.version = await this.imageVersionRepository.findOne(version_id);
     instance.agent = agent;
     instance.port = agent.findAvailablePort();
@@ -41,8 +39,14 @@ export class InstanceRepository extends Repository<Instance> {
     resource.instance = instance;
 
     agent.claimPort(instance.port);
-    agent.allocated_memory += requestedMemory;
-    agent.free_memory -= requestedMemory;
+    agent.allocated_memory += resource.memory;
+    agent.free_memory -= resource.memory;
+
+    agent.allocated_cores += resource.cpus;
+    agent.free_cores -= resource.cpus;
+
+    agent.allocated_storage += resource.storage;
+    agent.free_storage -= resource.storage;
 
     await instance.save();
     await agent.save();

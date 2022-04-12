@@ -23,23 +23,35 @@ export class Agent extends BaseEntity {
   @Column({ nullable: true })
   status: string;
 
-  @Column({ nullable: true })
+  @Column('int', { nullable: true })
   cores: number;
 
-  @Column({ nullable: true })
+  @Column('int', { nullable: true })
+  allocated_cores: number;
+
+  @Column('int', { nullable: true })
+  free_cores: number;
+
+  @Column('int', { nullable: true })
   memory: number;
 
-  @Column({ nullable: true })
+  @Column('int', { nullable: true })
   allocated_memory: number;
 
-  @Column({ nullable: true })
+  @Column('int', { nullable: true })
   free_memory: number;
 
-  @Column({ type: 'text', nullable: true })
-  port_numbers: string;
+  @Column('int', { nullable: true })
+  storage: number;
 
-  // @Column("int", { array: true })
-  // storage: number[];
+  @Column('int', { nullable: true })
+  free_storage: number;
+
+  @Column('int', { nullable: true })
+  allocated_storage: number;
+
+  @Column('text', { nullable: true })
+  port_numbers: string;
 
   @CreateDateColumn()
   created_at: Date;
