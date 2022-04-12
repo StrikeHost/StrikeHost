@@ -12,6 +12,9 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
+    defaults:
+      run:
+        working-directory: ./frontend
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
