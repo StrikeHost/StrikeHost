@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";

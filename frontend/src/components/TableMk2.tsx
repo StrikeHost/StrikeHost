@@ -31,8 +31,10 @@ export function TableMk2<T>({
   const [, setCount] = useState<number>(0);
   const [contextX, setContextX] = useState<number>(0);
   const [contextY, setContextY] = useState<number>(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [openFilter, setOpenFilter] = useState<string>("");
   const [rendered, setRendered] = useState<React.ReactNode[]>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [filters, setFilters] = useState<Record<string, string>>({});
   const [isContextOpen, setIsContextOpen] = useState<boolean>(false);
 

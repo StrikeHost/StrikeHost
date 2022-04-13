@@ -42,7 +42,6 @@ export const GridGraphBox = ({
   title,
   showWarning,
   onClick,
-  history,
 }: GridGraphBoxProps) => {
   const navHistory = useHistory();
 

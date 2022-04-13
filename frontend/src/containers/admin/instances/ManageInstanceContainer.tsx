@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
@@ -7,7 +6,6 @@ import { api } from "utils/api";
 import { Grid } from "components/Grid";
 import { Panel } from "components/Panel";
 import { Instance } from "interfaces/Instance";
-import { Breadcrumbs } from "components/Breadcrumbs";
 import { GridActionBox } from "components/dashboard/GridActionBox";
 import { InstanceOverviewPanel } from "components/admin/instance/InstanceOverviewPanel";
 import { InstanceFtpPanel } from "components/admin/instance/InstanceFtpPanel";
