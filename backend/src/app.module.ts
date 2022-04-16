@@ -24,6 +24,16 @@ import { AgentSecretModule } from './agent-secret/agent-secret.module';
 import { ImageVersionModule } from './image-version/image-version.module';
 import { ResourceAllocation } from './resource-allocation/resource-allocation.entity';
 import { ResourceAllocationModule } from './resource-allocation/resource-allocation.module';
+import { AdminController } from './admin/admin.controller';
+import { GameController } from './admin/game/game.controller';
+import { GameService } from './admin/game/game.service';
+import { GameModule as AdminGameModule } from './admin/game/game.module';
+import { ImageModule as AdminImageModule } from './admin/image/image.module';
+import { InstanceModule as AdminInstanceModule } from './admin/instance/instance.module';
+import { UserModule as AdminUserModule } from './admin/user/user.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -60,9 +70,15 @@ import { ResourceAllocationModule } from './resource-allocation/resource-allocat
     AgentModule,
     AgentSecretModule,
     EventModule,
+    AdminModule,
   ],
-  controllers: [],
-  providers: [],
+  controllers: [AdminController],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {
   constructor(private connection: Connection) {}

@@ -3,13 +3,17 @@ import { ResourceAllocation } from './resource-allocation.entity';
 
 @EntityRepository(ResourceAllocation)
 export class ResourceAllocationRepository extends Repository<ResourceAllocation> {
-  public async findByUser(userId: string): Promise<ResourceAllocation[]> {
+  public async findByUser(
+    userId: string,
+    relations?: string[],
+  ): Promise<ResourceAllocation[]> {
     return await this.find({
       where: {
         user: {
           id: userId,
         },
       },
+      relations,
     });
   }
 
