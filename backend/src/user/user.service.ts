@@ -1,5 +1,7 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 
 import { User } from './user.entity';
 import { UserRepository } from './user.repository';
@@ -8,12 +10,25 @@ import { RegisterUserDTO } from 'src/auth/dto/register-user.dto';
 @Injectable()
 export class UserService {
   constructor(
+    @InjectQueue('email') private emailQueue: Queue,
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
   ) {}
 
   public async registerUser(registerUserDto: RegisterUserDTO): Promise<User> {
-    return await this.userRepository.registerUser(registerUserDto);
+    const user = await this.userRepository.registerUser(registerUserDto);
+
+    await this.emailQueue.add('verify-email', {
+      to: user,
+      subject: 'Verify Your Email',
+      template: 'user/verify',
+      data: {
+        user: user,
+        link: `${process.env.BASE_URL}/verify`,
+      },
+    });
+
+    return user;
   }
 
   public async getUsers(): Promise<User[]> {
