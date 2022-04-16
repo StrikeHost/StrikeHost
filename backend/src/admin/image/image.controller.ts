@@ -1,9 +1,11 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { AdminGuard } from 'src/auth/guards/admin.guard';
 import { CreateImageDto } from '../game/dto/create-image.dto';
 import { CreateImageVersionDTO } from './dto/create-image-version.dto';
 import { ImageService } from './image.service';
 
 @Controller('admin/image')
+@UseGuards(AdminGuard)
 export class ImageController {
   constructor(private imageService: ImageService) {}
 

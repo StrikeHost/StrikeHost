@@ -7,11 +7,14 @@ import {
   Param,
   Post,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { AgentService } from 'src/agent/agent.service';
+import { AdminGuard } from 'src/auth/guards/admin.guard';
 import { CreateAgentDTO } from './dto/create-agent.dto';
 
 @Controller('admin/agent')
+@UseGuards(AdminGuard)
 export class AgentController {
   constructor(private agentService: AgentService) {}
 

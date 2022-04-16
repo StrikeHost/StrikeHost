@@ -19,6 +19,5 @@ import { EventModule } from './event/event.module';
     SettingsModule,
     EventModule,
   ],
-  providers: [{ provide: APP_GUARD, useClass: AdminGuard }],
 })
 export class AdminModule {}
