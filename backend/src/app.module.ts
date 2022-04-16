@@ -62,10 +62,6 @@ import { EmailModule } from './email/email.module';
         port: Number.parseInt(process.env.REDIS_PORT),
       },
     }),
-    BullModule.registerQueue({
-      // Not sure if this is the best place to put this?
-      name: 'email',
-    }),
     UserModule,
     AuthModule,
     InstanceModule,

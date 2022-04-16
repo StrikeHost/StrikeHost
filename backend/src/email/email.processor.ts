@@ -1,7 +1,8 @@
 import { Job } from 'bull';
-import { Process, Processor } from '@nestjs/bull';
-import { EmailDTO } from './dto/email.dto';
+import { OnQueueActive, Process, Processor } from '@nestjs/bull';
+
 import { Mail } from './Mail';
+import { EmailDTO } from './dto/email.dto';
 import { User } from 'src/user/user.entity';
 
 @Processor('email')
