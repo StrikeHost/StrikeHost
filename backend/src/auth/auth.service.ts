@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
 import { RegisterUserDTO } from './dto/register-user.dto';
+import { Agent } from 'src/agent/agent.entity';
 
 @Injectable()
 export class AuthService {
@@ -27,6 +28,20 @@ export class AuthService {
 
   async getCurrentUser(req) {
     return req.user;
+  }
+
+  /**
+   * Creates a new token for an agent
+   *
+   * @param {Agent} agent
+   * @returns {Promise<string>}
+   */
+  async loginAgent(agent: Agent): Promise<string> {
+    const payload = { sub: agent.id };
+
+    return this.jwtTokenService.sign(payload, {
+      secret: process.env.SECRET,
+    });
   }
 
   private async loginWithCredentials(user: any) {
