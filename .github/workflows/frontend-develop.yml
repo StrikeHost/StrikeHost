@@ -2,7 +2,9 @@ name: Frontend staging
 
 on:
   push:
-    branches: develop
+    branches:
+      - develop
+      - 20-add-integration-deployment-for-staging
 
 jobs:
   build:
