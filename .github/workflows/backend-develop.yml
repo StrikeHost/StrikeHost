@@ -57,6 +57,6 @@ jobs:
           username: ${{ secrets.STAGING_USER }}
           key: ${{ secrets.STAGING_PRIVATE_KEY }}
           port: 22
-          source: "backend/dist/*"
+          source: "backend/dist/*,backend/ecosystem.config.js"
           target: "/home/ubuntu/Backend"
           overwrite: true
