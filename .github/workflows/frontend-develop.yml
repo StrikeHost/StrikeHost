@@ -1,4 +1,4 @@
-name: Develop CI
+name: Frontend staging
 
 on:
   push:
