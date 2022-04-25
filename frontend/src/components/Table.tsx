@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import React, { useState } from "react";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { FlexGrid } from "./FlexGrid";
@@ -57,7 +56,7 @@ export function Table<T>({
     return (
       <span>
         <StyledIcon
-          icon={faCaretDown}
+          icon="caret-down"
           onClick={() => handleExpandRow(rowNumber)}
         />
       </span>
