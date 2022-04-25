@@ -3,6 +3,8 @@ name: Backend staging
 on:
   push:
     branches:
+      - develop
+      - 20-add-integration-deployment-for-staging
 
 jobs:
   build:
@@ -55,6 +57,6 @@ jobs:
           username: ${{ secrets.STAGING_USER }}
           key: ${{ secrets.STAGING_PRIVATE_KEY }}
           port: 22
-          source: "build/*"
+          source: "dist/*"
           target: "/home/ubuntu/Backend"
           overwrite: true
