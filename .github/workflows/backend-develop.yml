@@ -57,7 +57,7 @@ jobs:
           username: ${{ secrets.STAGING_USER }}
           key: ${{ secrets.STAGING_PRIVATE_KEY }}
           port: 22
-          source: "backend/dist/*,backend/ecosystem.config.js"
+          source: "backend/*"
           target: "/home/ubuntu/Backend"
           overwrite: true
       - name: Restart pm2 for backend services
