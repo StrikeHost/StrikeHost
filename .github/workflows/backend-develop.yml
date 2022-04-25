@@ -2,9 +2,7 @@ name: Backend staging
 
 on:
   push:
-    branches:
-      - develop
-      - 20-add-integration-deployment-for-staging
+    branches: develop
 
 jobs:
   build:
