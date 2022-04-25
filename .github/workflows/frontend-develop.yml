@@ -62,6 +62,6 @@ jobs:
           username: ${{ secrets.STAGING_USER }}
           key: ${{ secrets.STAGING_PRIVATE_KEY }}
           port: 22
-          source: "build/*"
+          source: "frontend/build/*"
           target: "/home/ubuntu/Frontend"
           overwrite: true
