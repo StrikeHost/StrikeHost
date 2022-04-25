@@ -69,5 +69,5 @@ jobs:
           echo "$PRIVATE_KEY" > private_key && chmod 400 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER}@${HOSTNAME} '
             cd /home/ubuntu/Backend/backend &&
-            pm2 restart Backend
+            /home/ubuntu/.nvm/versions/node/v16.14.2/bin/pm2 restart Backend
           '
