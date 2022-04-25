@@ -2,7 +2,9 @@ name: Backend staging
 
 on:
   push:
-    branches: develop
+    branches:
+      - develop
+      - 20-add-integration-deployment-for-staging
 
 jobs:
   build:
@@ -58,3 +60,14 @@ jobs:
           source: "backend/dist/*,backend/ecosystem.config.js"
           target: "/home/ubuntu/Backend"
           overwrite: true
+      - name: Restart pm2 for backend services
+        env:
+          PRIVATE_KEY: ${{ secrets.STAGING_PRIVATE_KEY }}
+          USER: ${{ secrets.STAGING_USER }}
+          HOSTNAME: ${{ secrets.STAGING_HOSTNAME }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 400 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER}@${HOSTNAME} '
+            cd /home/ubuntu/Backend/backend &&
+            pm2 restart Backend
+          '
