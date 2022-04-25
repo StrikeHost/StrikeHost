@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { faCheck, faCopy } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faCopy } from "@fortawesome/free-solid-svg-icons";
 
 export interface CopyableFieldProps {
   value: string;
