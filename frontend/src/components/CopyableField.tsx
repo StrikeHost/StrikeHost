@@ -1,6 +1,5 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { faCheck, faCopy } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export interface CopyableFieldProps {
@@ -26,7 +25,7 @@ export const CopyableField = ({ value, obfuscate }: CopyableFieldProps) => {
   return (
     <StyledFieldContainer>
       {obfuscate ? <p>********</p> : <p>{value}</p>}
-      <StyledIcon icon={isCopying ? faCheck : faCopy} onClick={handleClick} />
+      <StyledIcon icon={isCopying ? "check" : "copy"} onClick={handleClick} />
     </StyledFieldContainer>
   );
 };

@@ -11,8 +11,7 @@ import { User } from "interfaces/User";
 import { refetchUser } from "utils/user";
 
 interface LoginResponse {
-  user: User;
-  token: string;
+  access_token: string;
 }
 
 export const LoginForm = () => {
@@ -53,10 +52,9 @@ export const LoginForm = () => {
     api
       .post<LoginResponse>("/auth/login", request)
       .then(async (response) => {
-        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", response.data.access_token);
         await refetchUser(dispatch);
         history.push("/");
-        openConnection(response.data.user.id, response.data.token);
       })
       .catch(() => {
         // TODO: better error message

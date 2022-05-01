@@ -1,9 +1,9 @@
-import { IsString } from 'class-validator';
+import { IsObject, IsString } from 'class-validator';
 
 export class CreateImageVersionDTO {
   @IsString()
   name: string;
 
-  @IsString()
-  arguments: string;
+  @IsObject()
+  arguments: Record<string, string>;
 }
