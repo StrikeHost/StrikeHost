@@ -1,7 +1,7 @@
 import { IsNumber, IsObject, IsString } from 'class-validator';
 import { User } from 'src/user/user.entity';
 
-export class RegisterAgentSpecsDto {
+export class SetupAgentSpecsDto {
   @IsNumber()
   cores: number;
 
@@ -9,12 +9,12 @@ export class RegisterAgentSpecsDto {
   total_memory: number;
 }
 
-export class RegisterAgentDto {
+export class SetupAgentDto {
   @IsString()
-  decodedToken: User;
+  decodedToken: string;
 
   @IsObject()
-  specs: RegisterAgentSpecsDto;
+  specs: SetupAgentSpecsDto;
 
   @IsString()
   publicAddress: string;

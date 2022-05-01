@@ -60,6 +60,10 @@ export class AuthService {
     });
   }
 
+  decodeAgent(token: string): Agent {
+    return this.jwtTokenService.decode(token) as Agent;
+  }
+
   private async loginWithCredentials(user: any) {
     const payload = { username: user.username, sub: user.userId };
 

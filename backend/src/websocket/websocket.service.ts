@@ -1,9 +1,19 @@
 import { Injectable } from '@nestjs/common';
+import { Agent } from 'src/agent/agent.entity';
 
 @Injectable()
 export class WebsocketService {
   private _agentClients: string[];
   private _frontendClients: string[];
+  private _agentSocketMap: Record<string, string>;
+  private _frontendSocketMap: Record<string, string>;
+
+  constructor() {
+    this._agentClients = [];
+    this._frontendClients = [];
+    this._agentSocketMap = {};
+    this._frontendSocketMap = {};
+  }
 
   /**
    * Triggered on client disconnect
@@ -32,7 +42,7 @@ export class WebsocketService {
    *
    * @param {string} clientId
    */
-  public registerAgentConnection(clientId: string) {
+  public registerAgentConnection(clientId: string, agent: Agent) {
     this._agentClients.push(clientId);
   }
 
