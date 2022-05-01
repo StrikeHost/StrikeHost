@@ -51,7 +51,7 @@ export const ManageAgentContainer = () => {
                 />
               </StyledTab>
               <StyledTab>
-                <AgentInstanceManagementContainer agent={agent} />
+                {/* <AgentInstanceManagementContainer agent={agent} /> */}
               </StyledTab>
             </TabbedContainer>
           </StyledContainer>
