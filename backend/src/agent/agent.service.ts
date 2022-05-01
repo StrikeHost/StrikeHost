@@ -5,6 +5,7 @@ import { AgentSecret } from 'src/agent-secret/agent-secret.entity';
 import { AuthService } from 'src/auth/auth.service';
 import { Instance } from 'src/instance/instance.entity';
 import { InstanceRepository } from 'src/instance/instance.repository';
+import { PaginatedResponse } from 'src/interfaces/PaginatedResponse';
 import { User } from 'src/user/user.entity';
 import { Agent } from './agent.entity';
 import { AgentRepository } from './agent.repository';
@@ -25,8 +26,21 @@ export class AgentService {
    * @param {string[]} relations
    * @returns {Promise<Agent[]>}
    */
-  public async getAgents(relations?: string[]): Promise<Agent[]> {
-    return await this.agentRepository.find({ relations });
+  public async getAgents(
+    relations?: string[],
+    skip?: number,
+    count: number = 20,
+  ): Promise<PaginatedResponse<Agent>> {
+    const [results, selected] = await this.agentRepository.findAndCount({
+      relations,
+      skip,
+      take: count,
+    });
+
+    return {
+      results,
+      count: selected,
+    };
   }
 
   /**

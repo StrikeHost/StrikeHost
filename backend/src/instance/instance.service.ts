@@ -1,6 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AgentService } from 'src/agent/agent.service';
+import { ImageVersionRepository } from 'src/image-version/image-version.repository';
+import { ImageRepository } from 'src/image/image.repository';
 import { ResourceAllocationService } from 'src/resource-allocation/resource-allocation.service';
 import { User } from 'src/user/user.entity';
 import { CreateInstanceDTO } from './dto/create-instance.dto';
@@ -12,6 +18,10 @@ export class InstanceService {
   constructor(
     @InjectRepository(InstanceRepository)
     private instanceRepository: InstanceRepository,
+    @InjectRepository(ImageRepository)
+    private imageRepository: ImageRepository,
+    @InjectRepository(ImageVersionRepository)
+    private imageVersionRepository: ImageVersionRepository,
     private agentService: AgentService,
     private resourceAllocationService: ResourceAllocationService,
   ) {}
@@ -40,8 +50,14 @@ export class InstanceService {
     createInstanceDto: CreateInstanceDTO,
     user: User,
   ): Promise<Instance> {
+    console.log('here');
     const agent = await this.agentService.findAvailableAgent();
 
+    if (!agent) {
+      throw new InternalServerErrorException();
+    }
+
+    console.log('here2');
     const allocations =
       await this.resourceAllocationService.getFreeUserAllocations(user.id);
 
@@ -49,8 +65,22 @@ export class InstanceService {
       throw new NotFoundException('No available allocations!');
     }
 
+    console.log('here3');
+
+    const image = await this.imageRepository.findOne(
+      createInstanceDto.image_id,
+    );
+    const imageVersion = await this.imageVersionRepository.findOne(
+      createInstanceDto.version_id,
+    );
+
+    if (!image || !imageVersion) {
+      throw new NotFoundException();
+    }
+
     return await this.instanceRepository.createInstance(
-      createInstanceDto,
+      image,
+      imageVersion,
       user,
       agent,
       allocations[0],

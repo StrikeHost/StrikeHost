@@ -6,4 +6,7 @@ export class CreateResourceAllocationDTO {
 
   @IsNumber()
   storage: number;
+
+  @IsNumber()
+  cpus: number;
 }
