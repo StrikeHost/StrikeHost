@@ -74,7 +74,7 @@ const openConnection = (userId: string, token?: string) =>
       autoConnect: false,
     });
     wsClient.connect();
-    wsClient.on("message", handleWebsocketEvent);
+    wsClient.on("message", console.log);
 
     // Register frontend connection
     const event: RegisterFrontendConnectionEvent = {
@@ -100,6 +100,10 @@ export const App = connect()(() => {
       dispatch(setUser(response.data));
 
       openConnection(response.data.id);
+
+      setTimeout(() => {
+        wsClient?.emit("message", "sad");
+      }, 3000);
     });
 
     return () => {

@@ -9,6 +9,8 @@ import { PaginatedResponse } from 'src/interfaces/PaginatedResponse';
 import { User } from 'src/user/user.entity';
 import { Agent } from './agent.entity';
 import { AgentRepository } from './agent.repository';
+import { RegisterAgentDto } from './dto/register-agent.dto';
+import { Socket } from 'socket.io';
 
 @Injectable()
 export class AgentService {
@@ -141,4 +143,9 @@ export class AgentService {
 
     return null;
   }
+
+  public async initialSetupAgent(
+    client: Socket,
+    registerAgentDto: RegisterAgentDto,
+  ) {}
 }
