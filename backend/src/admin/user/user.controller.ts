@@ -1,7 +1,5 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AdminGuard } from 'src/auth/guards/admin.guard';
-import { BypassAuth } from 'src/auth/guards/bypass-auth.decorator';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ResourceAllocationService } from 'src/resource-allocation/resource-allocation.service';
 import { CreateResourceAllocationDTO } from './dto/create-resource-allocation.dto';
 import { UserService } from './user.service';

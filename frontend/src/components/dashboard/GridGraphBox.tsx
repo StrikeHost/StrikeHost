@@ -3,7 +3,6 @@ import { Line } from "react-chartjs-2";
 import styled from "styled-components";
 import { useHistory } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 
 import { AccentColor } from "utils/styles";
 import { ChartConfig } from "constants/ChartConfig";
@@ -65,7 +64,7 @@ export const GridGraphBox = ({
     return (
       <>
         <SecondaryText>{title}</SecondaryText>
-        {showWarning && <StyledIcon icon={faExclamationTriangle} />}
+        {showWarning && <StyledIcon icon="exclamation-triangle" />}
       </>
     );
   };

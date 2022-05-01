@@ -23,15 +23,16 @@ export class ImageVersion extends BaseEntity {
    * JSON-formatted string
    */
   @Column({
+    type: 'varchar',
     nullable: true,
     transformer: {
       from(val: string) {
-        return JSON.parse(val);
+        return JSON.parse(val) as Record<string, string>;
       },
       to(val: object) {
         return JSON.stringify(val);
       },
     },
   })
-  arguments: string;
+  arguments: Record<string, string>;
 }

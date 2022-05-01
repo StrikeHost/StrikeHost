@@ -11,10 +11,7 @@ import { User } from "interfaces/User";
 import { refetchUser } from "utils/user";
 
 interface RegisterResponse {
-  data: {
-    user: User;
-    token: string;
-  };
+  access_token: string;
 }
 
 export const RegisterForm = () => {
@@ -67,10 +64,9 @@ export const RegisterForm = () => {
     api
       .post<RegisterResponse>("/auth/register", request)
       .then(async (response) => {
-        localStorage.setItem("token", response.data.data.token);
+        localStorage.setItem("token", response.data.access_token);
         await refetchUser(dispatch);
         history.push("/");
-        openConnection(response.data.data.user.id, response.data.data.token);
       })
       .catch(() => {
         // do something

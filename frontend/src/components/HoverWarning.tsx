@@ -1,7 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 
 export interface HoverWarningProps {
   text: string;
@@ -15,7 +14,7 @@ export const HoverWarning = ({ text }: HoverWarningProps) => {
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
     >
-      <StyledIcon icon={faExclamationCircle} />
+      <StyledIcon icon="exclamation-circle" />
       <StyledWarningText isShown={isOpen}>{text}</StyledWarningText>
     </StyledContainer>
   );

@@ -8,8 +8,8 @@ export class InstanceController {
   constructor(private instanceService: InstanceService) {}
 
   @Get()
-  async GetInstances() {
-    return await this.instanceService.getAllInstances();
+  async GetInstances(@Param('skip') skip: number) {
+    return await this.instanceService.getAllInstances(skip);
   }
 
   @Get('/:instanceId')
