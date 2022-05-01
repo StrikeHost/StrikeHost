@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Container } from "react-bootstrap";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export interface ModalProps {
@@ -23,7 +24,7 @@ export const Modal = ({ title, children, onClose, isShown }: ModalProps) => {
               )}
             </div>
             <StyledIcon onClick={onClose}>
-              <FontAwesomeIcon icon="times" />
+              <FontAwesomeIcon icon={faXmark} />
             </StyledIcon>
           </StyledTitleContainer>
           {title && <hr />}

@@ -67,7 +67,7 @@ export const CreateInstanceContainer = () => {
     };
 
     api
-      .post("instance/create", request)
+      .post("instance", request)
       .then(() => {
         history.push("/");
       })
