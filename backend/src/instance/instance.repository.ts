@@ -37,6 +37,7 @@ export class InstanceRepository extends Repository<Instance> {
     instance.storage = resource.storage;
     instance.agent = agent;
     instance.port = agent.findAvailablePort();
+    instance.status = 'STOPPED';
 
     resource.instance = instance;
 

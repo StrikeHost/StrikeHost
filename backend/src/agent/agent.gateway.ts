@@ -3,11 +3,12 @@ import {
   WebSocketGateway,
   WsResponse,
   MessageBody,
+  ConnectedSocket,
 } from '@nestjs/websockets';
 import { AgentService } from './agent.service';
 import {
   ClientMessageType,
-  ServerEnumType,
+  ServerMessageType,
 } from 'src/enums/WebsocketMessageType';
 import { SetupAgentDto } from './dto/setup-agent.dto';
 import { Socket } from 'socket.io';
@@ -20,15 +21,28 @@ export class AgentGateway {
     private websocketService: WebsocketService,
   ) {}
 
+  /**
+   * Registers an agent as available
+   *
+   * @param agentId
+   * @param client
+   */
   @SubscribeMessage(ClientMessageType.REGISTER_AGENT)
   async RegisterAgent(
     @MessageBody('agentId') agentId: string,
-    client: Socket,
+    @ConnectedSocket() client: Socket,
   ): Promise<void> {
     const agent = await this.agentService.getAgent(agentId);
     this.websocketService.registerAgentConnection(client, agent);
   }
 
+  /**
+   * Handles initial setup of an agent
+   *
+   * @param registerAgentDto
+   * @param client
+   * @returns
+   */
   @SubscribeMessage(ClientMessageType.SETUP_AGENT)
   async SetupAgent(
     @MessageBody() registerAgentDto: SetupAgentDto,
@@ -40,8 +54,8 @@ export class AgentGateway {
     );
 
     return {
-      event: ServerEnumType.AGENT_ASSIGN,
-      data: agent,
+      event: ServerMessageType.AGENT_ASSIGN,
+      data: { agent },
     };
   }
 }

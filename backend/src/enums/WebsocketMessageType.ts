@@ -11,7 +11,7 @@ export enum ClientMessageType {
 }
 
 /* Server events - events emitted by the server */
-export enum ServerEnumType {
+export enum ServerMessageType {
   RESET_AGENT = 'agent.reset',
   AGENT_ASSIGN = 'agent.assign',
   UPDATE_AGENT = 'agent.update',

@@ -1,18 +1,32 @@
+import { Socket } from 'socket.io';
 import { Injectable } from '@nestjs/common';
+
+import { User } from 'src/user/user.entity';
 import { Agent } from 'src/agent/agent.entity';
+import { ServerMessageType } from 'src/enums/WebsocketMessageType';
 
 @Injectable()
 export class WebsocketService {
   private _agentClients: string[];
   private _frontendClients: string[];
+  private _clientSockets: Record<string, Socket>;
+  /* Client ID to Agent ID */
   private _agentSocketMap: Record<string, string>;
+  /* Agent ID to Client ID */
+  private _agentSocketReverseMap: Record<string, string>;
+  /* Client ID to User ID */
   private _frontendSocketMap: Record<string, string>;
+  /* User ID to Client ID */
+  private _frontendSocketReverseMap: Record<string, string>;
 
   constructor() {
     this._agentClients = [];
     this._frontendClients = [];
+    this._clientSockets = {};
     this._agentSocketMap = {};
+    this._agentSocketReverseMap = {};
     this._frontendSocketMap = {};
+    this._frontendSocketReverseMap = {};
   }
 
   /**
@@ -26,6 +40,18 @@ export class WebsocketService {
     this._frontendClients = this._frontendClients.filter(
       (id) => id !== clientId,
     );
+
+    // If the client was frontend, deregister it
+    if (this._frontendSocketMap[clientId]) {
+      delete this._frontendSocketReverseMap[this._frontendSocketMap[clientId]];
+      delete this._frontendSocketMap[clientId];
+    }
+
+    // If the client was agent, deregister it
+    if (this._agentSocketMap[clientId]) {
+      delete this._agentSocketReverseMap[this._agentSocketMap[clientId]];
+      delete this._agentSocketMap[clientId];
+    }
   }
 
   /**
@@ -33,8 +59,12 @@ export class WebsocketService {
    *
    * @param {string} clientId
    */
-  public registerFrontendConnection(clientId: string) {
+  public registerFrontendConnection(socket: Socket, user: User) {
+    const clientId = socket.id;
+    this._clientSockets[clientId] = socket; // Save the socket for later usage
     this._frontendClients.push(clientId);
+    this._frontendSocketMap[clientId] = user.id;
+    this._frontendSocketReverseMap[user.id] = clientId;
   }
 
   /**
@@ -42,8 +72,12 @@ export class WebsocketService {
    *
    * @param {string} clientId
    */
-  public registerAgentConnection(clientId: string, agent: Agent) {
+  public registerAgentConnection(socket: Socket, agent: Agent) {
+    const clientId = socket.id;
+    this._clientSockets[clientId] = socket; // Save the socket for later usage
     this._agentClients.push(clientId);
+    this._agentSocketMap[clientId] = agent.id;
+    this._agentSocketReverseMap[agent.id] = clientId;
   }
 
   /**
@@ -56,11 +90,32 @@ export class WebsocketService {
     return this._agentClients.some((id) => id === clientId);
   }
 
+  /**
+   * Send a message to the specified client
+   *
+   * @param {string} clientId
+   * @param {ServerMessageType} event
+   * @param {any} data
+   */
+  public sendMessage(clientId: string, event: ServerMessageType, data: any) {
+    this._clientSockets[clientId].emit(event, data);
+  }
+
   public get agentClients() {
     return this._agentClients;
   }
 
   public get frontendClients() {
     return this._frontendClients;
+  }
+
+  /**
+   * Returns the socket id associated with the specified agent
+   *
+   * @param agentId
+   * @returns
+   */
+  public getAgentClientId(agentId: string) {
+    return this._agentSocketReverseMap[agentId];
   }
 }

@@ -155,11 +155,12 @@ export class AgentService {
     client: Socket,
     registerAgentDto: SetupAgentDto,
   ): Promise<Agent> {
-    const agent = this.jwtTokenService.decodeAgent(
-      registerAgentDto.decodedToken,
-    );
+    const agentObj = this.jwtTokenService.decodeAgent(registerAgentDto.token);
+    const agent = await this.agentRepository.findOne(agentObj.id);
 
-    await agent.reload();
+    if (!agent) {
+      throw new NotFoundException('Agent not found!');
+    }
 
     agent.cores = registerAgentDto.specs.cores;
     agent.ip = registerAgentDto.publicAddress;
@@ -168,6 +169,9 @@ export class AgentService {
     agent.allocated_memory = 0;
     agent.status = '';
     agent.port_numbers = Array.from({ length: 512 }, (_, i) => i + 1024);
+    agent.cores = registerAgentDto.specs.cores;
+    agent.free_cores = agent.cores;
+    agent.allocated_cores = 0;
 
     await agent.save();
 

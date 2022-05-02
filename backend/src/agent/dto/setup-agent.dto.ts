@@ -6,12 +6,15 @@ export class SetupAgentSpecsDto {
   cores: number;
 
   @IsNumber()
+  storage: number;
+
+  @IsNumber()
   total_memory: number;
 }
 
 export class SetupAgentDto {
   @IsString()
-  decodedToken: string;
+  token: string;
 
   @IsObject()
   specs: SetupAgentSpecsDto;

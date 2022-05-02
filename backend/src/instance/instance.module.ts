@@ -8,6 +8,7 @@ import { InstanceController } from './instance.controller';
 import { InstanceRepository } from './instance.repository';
 import { InstanceService } from './instance.service';
 import { InstanceGateway } from './instance.gateway';
+import { WebsocketModule } from 'src/websocket/websocket.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { InstanceGateway } from './instance.gateway';
     ]),
     AgentModule,
     ResourceAllocationModule,
+    WebsocketModule,
   ],
   providers: [InstanceService, InstanceGateway],
   controllers: [InstanceController],
