@@ -13,6 +13,7 @@ import { ResourceAllocationService } from 'src/resource-allocation/resource-allo
 import { User } from 'src/user/user.entity';
 import { WebsocketService } from 'src/websocket/websocket.service';
 import { CreateInstanceDTO } from './dto/create-instance.dto';
+import { InstanceConsoleDto } from './dto/instance-console.dto';
 import { Instance } from './instance.entity';
 import { InstanceRepository } from './instance.repository';
 
@@ -132,10 +133,10 @@ export class InstanceService {
    * @param instanceId
    * @param user
    */
-  public async startInstance(instanceId: string, user: User) {
+  public async startInstance(instanceId: string, user?: User) {
     const instance = await this.getInstance(instanceId, ['user', 'agent']);
 
-    if (instance.user.id !== user.id) {
+    if (user && instance.user.id !== user.id) {
       throw new ForbiddenException();
     }
 
@@ -155,10 +156,10 @@ export class InstanceService {
    * @param instanceId
    * @param user
    */
-  public async stopInstance(instanceId: string, user: User) {
+  public async stopInstance(instanceId: string, user?: User) {
     const instance = await this.getInstance(instanceId, ['user', 'agent']);
 
-    if (instance.user.id !== user.id) {
+    if (user && instance.user.id !== user.id) {
       throw new ForbiddenException();
     }
 
@@ -170,5 +171,23 @@ export class InstanceService {
       ServerMessageType.STOP_INSTANCE,
       { instance },
     );
+  }
+
+  public async relayInstanceConsoleMessage(
+    instanceId: string,
+    instanceConsoleDto: InstanceConsoleDto,
+  ) {
+    console.log(instanceConsoleDto);
+
+    const wsClientId =
+      await this.websocketService.getInstanceFrontendConnection(instanceId);
+
+    if (wsClientId) {
+      this.websocketService.sendMessage(
+        wsClientId,
+        ServerMessageType.RELAY_INSTANCE_CONSOLE,
+        instanceConsoleDto,
+      );
+    }
   }
 }

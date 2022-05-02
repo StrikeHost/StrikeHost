@@ -14,7 +14,7 @@ import { SetupAgentDto } from './dto/setup-agent.dto';
 import { Socket } from 'socket.io';
 import { WebsocketService } from 'src/websocket/websocket.service';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: { origin: '*' } })
 export class AgentGateway {
   constructor(
     private agentService: AgentService,

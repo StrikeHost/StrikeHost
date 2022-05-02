@@ -1,9 +1,11 @@
 import { Socket } from 'socket.io';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { User } from 'src/user/user.entity';
 import { Agent } from 'src/agent/agent.entity';
 import { ServerMessageType } from 'src/enums/WebsocketMessageType';
+import { InstanceRepository } from 'src/instance/instance.repository';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class WebsocketService {
@@ -19,7 +21,10 @@ export class WebsocketService {
   /* User ID to Client ID */
   private _frontendSocketReverseMap: Record<string, string>;
 
-  constructor() {
+  constructor(
+    @InjectRepository(InstanceRepository)
+    private instanceRepository: InstanceRepository,
+  ) {
     this._agentClients = [];
     this._frontendClients = [];
     this._clientSockets = {};
@@ -99,6 +104,27 @@ export class WebsocketService {
    */
   public sendMessage(clientId: string, event: ServerMessageType, data: any) {
     this._clientSockets[clientId].emit(event, data);
+  }
+
+  /**
+   * Gets any associated frontend connection with a particular instance id
+   *
+   * @param instanceId
+   * @returns
+   */
+  public async getInstanceFrontendConnection(instanceId: string) {
+    const instance = await this.instanceRepository.findOne(instanceId, {
+      relations: ['user'],
+    });
+
+    if (!instance) {
+      throw new NotFoundException();
+    }
+
+    const userId = instance.user.id;
+    const wsClientId = this._frontendSocketReverseMap[userId];
+
+    return wsClientId;
   }
 
   public get agentClients() {
