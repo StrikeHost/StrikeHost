@@ -100,10 +100,6 @@ export const App = connect()(() => {
       dispatch(setUser(response.data));
 
       openConnection(response.data.id);
-
-      setTimeout(() => {
-        wsClient?.emit("message", "sad");
-      }, 3000);
     });
 
     return () => {
