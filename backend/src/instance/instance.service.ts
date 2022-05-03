@@ -14,6 +14,7 @@ import { User } from 'src/user/user.entity';
 import { WebsocketService } from 'src/websocket/websocket.service';
 import { CreateInstanceDTO } from './dto/create-instance.dto';
 import { InstanceConsoleDto } from './dto/instance-console.dto';
+import { InstanceStateChangeDto } from './dto/instance-state-change.dto';
 import { Instance } from './instance.entity';
 import { InstanceRepository } from './instance.repository';
 
@@ -173,12 +174,16 @@ export class InstanceService {
     );
   }
 
+  /**
+   * Relays a console message to the related frontend connection
+   *
+   * @param instanceId
+   * @param instanceConsoleDto
+   */
   public async relayInstanceConsoleMessage(
     instanceId: string,
     instanceConsoleDto: InstanceConsoleDto,
   ) {
-    console.log(instanceConsoleDto);
-
     const wsClientId =
       await this.websocketService.getInstanceFrontendConnection(instanceId);
 
@@ -187,6 +192,37 @@ export class InstanceService {
         wsClientId,
         ServerMessageType.RELAY_INSTANCE_CONSOLE,
         instanceConsoleDto,
+      );
+    }
+  }
+
+  /**
+   * Registers a change in instance state
+   *
+   * @param instanceId
+   * @param instanceStateChangeDto
+   */
+  public async changeInstanceState(
+    instanceId: string,
+    instanceStateChangeDto: InstanceStateChangeDto,
+  ) {
+    const instance = await this.instanceRepository.findOne(instanceId);
+
+    if (!instance) {
+      throw new NotFoundException();
+    }
+
+    instance.status = instanceStateChangeDto.status;
+    await instance.save();
+
+    const wsClientId =
+      await this.websocketService.getInstanceFrontendConnection(instanceId);
+
+    if (wsClientId) {
+      this.websocketService.sendMessage(
+        wsClientId,
+        ServerMessageType.INSTANCE_STATE_CHANGE,
+        instanceStateChangeDto,
       );
     }
   }
