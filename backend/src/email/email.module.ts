@@ -9,9 +9,7 @@ import { EmailProcessor } from './email.processor';
     }),
   ],
   exports: [
-    BullModule.registerQueue({
-      name: 'email',
-    }),
+    BullModule
   ],
   providers: [EmailProcessor],
 })

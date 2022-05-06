@@ -28,7 +28,7 @@ export class EmailProcessor {
     console.log('resume');
   }
 
-  @Process()
+  @Process('verify-email')
   async handle(job: Job<EmailDTO>) {
     const { to, subject, template, data } = job.data;
     console.log('email handle');
