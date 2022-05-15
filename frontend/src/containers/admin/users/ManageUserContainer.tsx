@@ -28,7 +28,7 @@ export const ManageUserContainer = () => {
       {user && (
         <Grid columns={6} gap="1rem">
           <UserInfoPanel user={user} />
-          <UserBillingPanel user={user} />
+          <UserBillingPanel />
         </Grid>
       )}
     </Container>

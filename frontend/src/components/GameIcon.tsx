@@ -1,7 +1,3 @@
-import {
-  faCubes,
-  faExclamationTriangle,
-} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { GameType } from "interfaces/Game";
@@ -12,13 +8,13 @@ export interface GameIconProps {
 
 export const GameIcon = ({ game }: GameIconProps) => {
   if (!game) {
-    return <FontAwesomeIcon icon={faExclamationTriangle} />;
+    return <FontAwesomeIcon icon="exclamation-triangle" />;
   }
 
   switch (game) {
     case GameType.MINECRAFT:
-      return <FontAwesomeIcon icon={faCubes} />;
+      return <FontAwesomeIcon icon="cubes" />;
     default:
-      return <FontAwesomeIcon icon={faExclamationTriangle} />;
+      return <FontAwesomeIcon icon="exclamation-triangle" />;
   }
 };

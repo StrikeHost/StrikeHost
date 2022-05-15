@@ -1,13 +1,11 @@
+import { useState } from "react";
 import toast from "react-hot-toast";
 import styled from "styled-components";
 import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
-import { useContext, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 
 import { api } from "utils/api";
-import { SocketContext } from "App";
-import { User } from "interfaces/User";
 import { refetchUser } from "utils/user";
 
 interface RegisterResponse {
@@ -17,7 +15,6 @@ interface RegisterResponse {
 export const RegisterForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { openConnection } = useContext(SocketContext);
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");

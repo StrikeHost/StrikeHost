@@ -5,6 +5,6 @@ export interface UserResourcesPanelProps {
   user: User;
 }
 
-export const UserResourcesPanel = ({ user }: UserResourcesPanelProps) => {
+export const UserResourcesPanel = () => {
   return <Panel span={6} title="Resource Allocations"></Panel>;
 };
