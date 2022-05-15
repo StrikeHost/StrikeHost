@@ -9,6 +9,8 @@ import { PaginatedResponse } from 'src/interfaces/PaginatedResponse';
 import { User } from 'src/user/user.entity';
 import { Agent } from './agent.entity';
 import { AgentRepository } from './agent.repository';
+import { SetupAgentDto } from './dto/setup-agent.dto';
+import { Socket } from 'socket.io';
 
 @Injectable()
 export class AgentService {
@@ -140,5 +142,39 @@ export class AgentService {
     }
 
     return null;
+  }
+
+  /**
+   * Performs the initial setup process for an agent
+   *
+   * @param {string} client
+   * @param {SetupAgentDto} registerAgentDto
+   * @returns {Promise<Agent>}
+   */
+  public async initialSetupAgent(
+    client: Socket,
+    registerAgentDto: SetupAgentDto,
+  ): Promise<Agent> {
+    const agentObj = this.jwtTokenService.decodeAgent(registerAgentDto.token);
+    const agent = await this.agentRepository.findOne(agentObj.id);
+
+    if (!agent) {
+      throw new NotFoundException('Agent not found!');
+    }
+
+    agent.cores = registerAgentDto.specs.cores;
+    agent.ip = registerAgentDto.publicAddress;
+    agent.memory = registerAgentDto.specs.total_memory;
+    agent.free_memory = agent.memory;
+    agent.allocated_memory = 0;
+    agent.status = '';
+    agent.port_numbers = Array.from({ length: 512 }, (_, i) => i + 1024);
+    agent.cores = registerAgentDto.specs.cores;
+    agent.free_cores = agent.cores;
+    agent.allocated_cores = 0;
+
+    await agent.save();
+
+    return agent;
   }
 }

@@ -15,6 +15,7 @@ import { AgentInformation } from "../interfaces/AgentInformation";
 import { InstanceStatusType } from "../enums/InstanceStatus";
 import { Router } from "./Router";
 import { Instance as InstanceInterface } from "../interfaces/Instance";
+import { ServerEventName } from "interfaces/ServerEvents";
 
 /**
  * Manages central functionality of the Game Server Agent
@@ -107,11 +108,18 @@ export class Agent {
     //   console.log(event);
     // });
     Agent.socket = io(process.env.SOCKET_SERVER_ADDRESS, {
-      extraHeaders: {
-        Authorization: `Bearer ${process.env.AGENT_SECRET}`,
-      },
+      // extraHeaders: {
+      //   Authorization: `Bearer ${process.env.AGENT_SECRET}`,
+      // },
     });
-    Agent.socket.on("message", (event) => Router.handle(this, event));
+    Agent.socket.onAny((event: ServerEventName | "exception", data: any) => {
+      if (event !== "exception") {
+        Router.handle(this, {
+          event,
+          ...data,
+        });
+      }
+    });
   }
 
   /**
@@ -125,7 +133,7 @@ export class Agent {
     const diskSize = (await diskLayout())[0].size / 1_000_000_000; // get size in gigabytes
 
     return {
-      cpu_cores: cores,
+      cores,
       storage: diskSize,
       total_memory: totalMem,
     };
@@ -138,7 +146,8 @@ export class Agent {
    * @param {string} channel
    */
   public static sendEvent(message: ClientEvent) {
-    this.socket.emit("message", message);
+    const { event, data } = message;
+    this.socket.emit(event, data);
   }
 
   public getConnection() {

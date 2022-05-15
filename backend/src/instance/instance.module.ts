@@ -7,6 +7,8 @@ import { ResourceAllocationModule } from 'src/resource-allocation/resource-alloc
 import { InstanceController } from './instance.controller';
 import { InstanceRepository } from './instance.repository';
 import { InstanceService } from './instance.service';
+import { InstanceGateway } from './instance.gateway';
+import { WebsocketModule } from 'src/websocket/websocket.module';
 
 @Module({
   imports: [
@@ -17,8 +19,9 @@ import { InstanceService } from './instance.service';
     ]),
     AgentModule,
     ResourceAllocationModule,
+    WebsocketModule,
   ],
-  providers: [InstanceService],
+  providers: [InstanceService, InstanceGateway],
   controllers: [InstanceController],
 })
 export class InstanceModule {}

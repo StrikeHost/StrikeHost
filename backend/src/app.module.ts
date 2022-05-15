@@ -28,6 +28,7 @@ import { AdminController } from './admin/admin.controller';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { AdminModule } from './admin/admin.module';
+import { WebsocketModule } from './websocket/websocket.module';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { AdminModule } from './admin/admin.module';
     AgentSecretModule,
     EventModule,
     AdminModule,
+    WebsocketModule,
   ],
   controllers: [AdminController],
   providers: [
