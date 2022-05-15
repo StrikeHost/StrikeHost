@@ -38,7 +38,7 @@ export const UsageCircle = ({
               r="52.35"
               cy="61"
               cx="61"
-              stroke-width="8"
+              strokeWidth="8"
               stroke={bgColor}
               fill="none"
             />

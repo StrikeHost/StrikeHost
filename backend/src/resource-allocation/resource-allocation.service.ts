@@ -60,12 +60,13 @@ export class ResourceAllocationService {
       throw new NotFoundException('User not found!');
     }
 
-    const { memory, storage } = createAllocationDto;
+    const { cpus, memory, storage } = createAllocationDto;
 
     const allocation = new ResourceAllocation();
     allocation.memory = memory;
     allocation.storage = storage;
     allocation.user = user;
+    allocation.cpus = cpus;
 
     await allocation.save();
 

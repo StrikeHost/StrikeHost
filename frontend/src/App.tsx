@@ -74,7 +74,6 @@ const openConnection = (userId: string, token?: string) =>
       autoConnect: false,
     });
     wsClient.connect();
-    wsClient.on("message", handleWebsocketEvent);
 
     // Register frontend connection
     const event: RegisterFrontendConnectionEvent = {

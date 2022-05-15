@@ -8,8 +8,6 @@ import App from "./App";
 import { rootReducer } from "redux/reducers/RootReducer";
 
 export const store = createStore(rootReducer);
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 
 ReactDOM.render(
   <React.StrictMode>

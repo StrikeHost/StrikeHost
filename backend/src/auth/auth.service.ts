@@ -13,11 +13,27 @@ export class AuthService {
     private userService: UserService,
   ) {}
 
+  /**
+   * Registers a user with the specified credentials
+   *
+   * @param {RegisterUserDTO} registerUserDto
+   * @returns {Promise<User>}
+   */
   async register(registerUserDto: RegisterUserDTO): Promise<User> {
     return await this.userService.registerUser(registerUserDto);
   }
 
-  async login(email: string, password: string) {
+  /**
+   * Logs a user in with the specified credentials
+   *
+   * @param {string} email
+   * @param {string} password
+   * @returns {Promise<{ access_token: string }>}
+   */
+  async login(
+    email: string,
+    password: string,
+  ): Promise<{ access_token: string }> {
     const user = await this.userService.getUserByEmail(email);
 
     const validate = await user.comparePassword(password);
@@ -42,6 +58,10 @@ export class AuthService {
     return this.jwtTokenService.sign(payload, {
       secret: process.env.SECRET,
     });
+  }
+
+  decodeAgent(token: string): Agent {
+    return this.jwtTokenService.decode(token) as Agent;
   }
 
   private async loginWithCredentials(user: any) {

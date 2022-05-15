@@ -1,5 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Game } from 'src/game/game.entity';
+import { GameRepository } from 'src/game/game.repository';
 import { ImageVersion } from 'src/image-version/image-version.entity';
 import { ImageVersionRepository } from 'src/image-version/image-version.repository';
 import { Image } from 'src/image/image.entity';
@@ -10,7 +12,10 @@ import { CreateImageVersionDTO } from './dto/create-image-version.dto';
 @Injectable()
 export class ImageService {
   constructor(
-    @InjectRepository(ImageRepository) private imageRepository: ImageRepository,
+    @InjectRepository(GameRepository)
+    private gameRepository: GameRepository,
+    @InjectRepository(ImageRepository)
+    private imageRepository: ImageRepository,
     @InjectRepository(ImageVersionRepository)
     private imageVersionRepository: ImageVersionRepository,
   ) {}
@@ -117,5 +122,16 @@ export class ImageService {
     await imageVersion.save();
 
     return imageVersion;
+  }
+
+  /**
+   * Returns a listing of available game images
+   *
+   * @returns
+   */
+  public async getImageListings(): Promise<Game[]> {
+    return await this.gameRepository.find({
+      relations: ['image', 'image.version'],
+    });
   }
 }

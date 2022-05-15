@@ -19,8 +19,8 @@ export class AgentController {
   constructor(private agentService: AgentService) {}
 
   @Get()
-  async GetAgents() {
-    return await this.agentService.getAgents(['instances']);
+  async GetAgents(@Param('skip') skip: number) {
+    return await this.agentService.getAgents(['instances'], skip);
   }
 
   @Post()

@@ -25,15 +25,10 @@ import { ImageVersionModule } from './image-version/image-version.module';
 import { ResourceAllocation } from './resource-allocation/resource-allocation.entity';
 import { ResourceAllocationModule } from './resource-allocation/resource-allocation.module';
 import { AdminController } from './admin/admin.controller';
-import { GameController } from './admin/game/game.controller';
-import { GameService } from './admin/game/game.service';
-import { GameModule as AdminGameModule } from './admin/game/game.module';
-import { ImageModule as AdminImageModule } from './admin/image/image.module';
-import { InstanceModule as AdminInstanceModule } from './admin/instance/instance.module';
-import { UserModule as AdminUserModule } from './admin/user/user.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { AdminModule } from './admin/admin.module';
+import { WebsocketModule } from './websocket/websocket.module';
 
 @Module({
   imports: [
@@ -71,6 +66,7 @@ import { AdminModule } from './admin/admin.module';
     AgentSecretModule,
     EventModule,
     AdminModule,
+    WebsocketModule,
   ],
   controllers: [AdminController],
   providers: [

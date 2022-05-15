@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PaginatedResponse } from 'src/interfaces/PaginatedResponse';
 import { User } from 'src/user/user.entity';
 import { UserRepository } from 'src/user/user.repository';
 
@@ -10,8 +11,19 @@ export class UserService {
     private userRepository: UserRepository,
   ) {}
 
-  async getAllUsers() {
-    return await this.userRepository.find();
+  async getAllUsers(
+    skip?: number,
+    count: number = 20,
+  ): Promise<PaginatedResponse<User>> {
+    const [results, selected] = await this.userRepository.findAndCount({
+      skip,
+      take: count,
+    });
+
+    return {
+      results,
+      count: selected,
+    };
   }
 
   /**
