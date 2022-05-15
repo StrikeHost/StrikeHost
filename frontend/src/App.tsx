@@ -17,7 +17,6 @@ import {
 import { api } from "utils/api";
 import { User } from "interfaces/User";
 import { setUser } from "redux/actions/UserActions";
-import { handleWebsocketEvent } from "utils/websocket";
 import { PrivateRoute } from "components/PrivateRoute";
 import { RootContainer } from "containers/RootContainer";
 import { HomeContainer } from "containers/HomeContainer";

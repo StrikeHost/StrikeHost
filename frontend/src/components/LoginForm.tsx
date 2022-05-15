@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import styled from "styled-components";
 import { useHistory } from "react-router";
@@ -6,8 +6,6 @@ import { useDispatch } from "react-redux";
 import { Button, Card, Form } from "react-bootstrap";
 
 import { api } from "utils/api";
-import { SocketContext } from "App";
-import { User } from "interfaces/User";
 import { refetchUser } from "utils/user";
 
 interface LoginResponse {
@@ -17,7 +15,6 @@ interface LoginResponse {
 export const LoginForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { openConnection } = useContext(SocketContext);
 
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");

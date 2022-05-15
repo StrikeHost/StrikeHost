@@ -9,7 +9,6 @@ import { PageTitle } from "components/PageTitle";
 import { TabbedContainer } from "components/TabbedContainer";
 import { ManageAgentConfigContainer } from "./ManageAgentConfigContainer";
 import { DetailedAgentPreview } from "components/admin/agent/DetailedAgentPreview";
-import { AgentInstanceManagementContainer } from "./AgentInstanceManagementContainer";
 
 interface ManageAgentContainerParams {
   agentId: string;
