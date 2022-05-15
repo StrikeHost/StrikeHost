@@ -67,7 +67,7 @@ export class Process {
     const dockerArgs = [
       "docker",
       "create",
-      `-p=${this.port}:25565`,
+      `-p=${this.port}:25565`, // TODO: replace with game's original port
       `--expose=${this.port}`,
       `--name=${this.instance.id}`,
       `--cpus=${cpus}`,
