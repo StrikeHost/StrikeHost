@@ -4,6 +4,7 @@ import { Button } from "components/Button";
 import { Game } from "interfaces/Game";
 import { useState } from "react";
 import slugify from "slugify";
+import { InheritableGameComponentsForm } from "./game/InheritableGameComponentsForm";
 
 export interface ModifyGameFormProps {
   game?: Game;
@@ -13,6 +14,9 @@ export interface ModifyGameFormProps {
 export const ModifyGameForm = ({ game, onSubmit }: ModifyGameFormProps) => {
   const [name, setName] = useState<string>(game?.name || "");
   const [slug, setSlug] = useState<string>(game?.slug || "");
+  const [gameVal, setGameVal] = useState<Game | Record<string, unknown>>(
+    game || {}
+  );
 
   /**
    * Invoked on form submit
@@ -53,6 +57,10 @@ export const ModifyGameForm = ({ game, onSubmit }: ModifyGameFormProps) => {
           onChange={(ev) => setSlug(ev.currentTarget.value)}
         />
       </Form.Group>
+      <InheritableGameComponentsForm
+        components={gameVal}
+        onChange={(components) => setGameVal(components as Game)}
+      />
       <Button variant="primary" onClick={handleFormSubmit}>
         Submit
       </Button>

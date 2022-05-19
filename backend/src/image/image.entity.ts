@@ -26,11 +26,31 @@ export class Image extends BaseEntity {
   @Column()
   name: string;
 
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    transformer: {
+      from(val: string) {
+        return JSON.parse(val) as Record<string, string>;
+      },
+      to(val: object) {
+        return JSON.stringify(val);
+      },
+    },
+  })
+  arguments: Record<string, string>;
+
   @Column()
   docker_name: string;
 
   @Column({ nullable: true })
   min_memory?: number;
+
+  @Column({ nullable: true })
+  min_storage?: number;
+
+  @Column({ nullable: true })
+  min_cpu?: number;
 
   @CreateDateColumn()
   created_at: Date;

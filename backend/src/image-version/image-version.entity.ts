@@ -19,9 +19,6 @@ export class ImageVersion extends BaseEntity {
   @ManyToOne(() => Image, (image) => image.versions)
   image: Image;
 
-  /**
-   * JSON-formatted string
-   */
   @Column({
     type: 'varchar',
     nullable: true,
@@ -35,4 +32,16 @@ export class ImageVersion extends BaseEntity {
     },
   })
   arguments: Record<string, string>;
+
+  @Column()
+  docker_name: string;
+
+  @Column({ nullable: true })
+  min_memory?: number;
+
+  @Column({ nullable: true })
+  min_storage?: number;
+
+  @Column({ nullable: true })
+  min_cpu?: number;
 }

@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { api } from "utils/api";
 import { Button } from "components/Button";
 import { Image, ImageVersion } from "interfaces/Game";
+import { InheritableGameComponentsForm } from "./game/InheritableGameComponentsForm";
 
 export interface ModifyVersionFormProps {
   version?: ImageVersion;
@@ -29,12 +30,15 @@ export const ModifyVersionForm = ({
 
   const [image, setImage] = useState<Image>();
   const [name, setName] = useState<string>(version?.name || "");
-  const [argumentsText, setArgumentsText] = useState<string>(
-    version ? formatArguments(version.arguments) : ""
-  );
-  const [versionArguments, setVersionArguments] = useState<
-    Record<string, string>
-  >(version?.arguments || {});
+  const [versionVal, setVersionVal] = useState<
+    ImageVersion | Record<string, unknown>
+  >(version || {});
+  // const [argumentsText, setArgumentsText] = useState<string>(
+  //   version ? formatArguments(version.arguments) : ""
+  // );
+  // const [versionArguments, setVersionArguments] = useState<
+  //   Record<string, string>
+  // >(version?.arguments || {});
 
   useEffect(() => {
     api.get<Image>(`/admin/image/${imageId}`).then((response) => {
@@ -59,8 +63,8 @@ export const ModifyVersionForm = ({
       }
     });
 
-    setVersionArguments(newArgs);
-    setArgumentsText(event.currentTarget.value);
+    // setVersionArguments(newArgs);
+    // setArgumentsText(event.currentTarget.value);
   };
 
   /**
@@ -70,7 +74,7 @@ export const ModifyVersionForm = ({
     const newVersion: Partial<ImageVersion> = {
       name,
       image,
-      arguments: versionArguments,
+      // arguments: versionArguments,
     };
 
     if (onSubmit) onSubmit(newVersion);
@@ -93,18 +97,10 @@ export const ModifyVersionForm = ({
           }
         />
       </Form.Group>
-      <Form.Group className="mb-4">
-        <Form.Label>Image Version Arguments</Form.Label>
-        <Form.Control
-          rows={5}
-          type="text"
-          value={argumentsText}
-          as="textarea"
-          required={true}
-          onChange={handleArgumentsChange}
-          placeholder={"arg1=value1\narg2=value2"}
-        />
-      </Form.Group>
+      <InheritableGameComponentsForm
+        components={versionVal}
+        onChange={(components) => setVersionVal(components as ImageVersion)}
+      />
       <Button variant="primary" onClick={handleSubmit}>
         Submit
       </Button>
