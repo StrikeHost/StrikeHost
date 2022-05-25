@@ -41,10 +41,49 @@ export class GameService {
    * @returns {Game}
    */
   async createGame(createGameDto: CreateGameDTO): Promise<Game> {
-    const { name, slug } = createGameDto;
+    const {
+      name,
+      slug,
+      docker_name,
+      arguments: args,
+      min_cpu,
+      min_memory,
+      min_storage,
+    } = createGameDto;
     const game = new Game();
     game.name = name;
     game.slug = slug;
+    game.docker_name = docker_name;
+    game.arguments = args;
+    game.min_cpu = min_cpu;
+    game.min_memory = min_memory;
+    game.min_storage = min_storage;
+    await game.save();
+
+    return game;
+  }
+
+  async updateGame(gameId: string, updateGame: CreateGameDTO): Promise<Game> {
+    const game = await this.getGame(gameId);
+
+    const {
+      name,
+      slug,
+      docker_name,
+      arguments: args,
+      min_cpu,
+      min_memory,
+      min_storage,
+    } = updateGame;
+
+    game.name = name;
+    game.slug = slug;
+    game.docker_name = docker_name;
+    game.arguments = args;
+    game.min_cpu = min_cpu;
+    game.min_memory = min_memory;
+    game.min_storage = min_storage;
+
     await game.save();
 
     return game;

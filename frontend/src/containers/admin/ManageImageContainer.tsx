@@ -60,7 +60,13 @@ export const ManageImageContainer = () => {
     <Container className="pt-4">
       <PageTitle title="Image Settings" className="pb-2" />
       <FlexGrid columns={2} gap="2rem">
-        <ModifyImageForm image={image} onSubmit={handleFormSubmit} />
+        {image.game && (
+          <ModifyImageForm
+            game={image.game}
+            image={image}
+            onSubmit={handleFormSubmit}
+          />
+        )}
         <div>
           <StyledContainer>
             <h5>Available Versions</h5>

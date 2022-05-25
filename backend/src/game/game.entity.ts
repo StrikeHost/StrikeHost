@@ -36,10 +36,10 @@ export class Game extends BaseEntity {
       },
     },
   })
-  arguments: Record<string, string>;
+  arguments?: Record<string, string>;
 
-  @Column()
-  docker_name: string;
+  @Column({ nullable: true })
+  docker_name?: string;
 
   @Column({ nullable: true })
   min_memory?: number;

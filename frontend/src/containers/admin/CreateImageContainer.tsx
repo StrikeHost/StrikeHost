@@ -3,9 +3,10 @@ import { Container } from "react-bootstrap";
 import { useHistory, useParams } from "react-router";
 
 import { api } from "utils/api";
-import { Image } from "interfaces/Game";
+import { Game, Image } from "interfaces/Game";
 import { PageTitle } from "components/PageTitle";
 import { ModifyImageForm } from "components/admin/ModifyImageForm";
+import { useEffect, useState } from "react";
 
 interface CreateImageContainerParams {
   gameId: string;
@@ -14,6 +15,7 @@ interface CreateImageContainerParams {
 export const CreateImageContainer = () => {
   const history = useHistory();
   const { gameId } = useParams<CreateImageContainerParams>();
+  const [game, setGame] = useState<Game>();
 
   const handleSubmit = (img: Partial<Image>) => {
     api.post<Image>(`/admin/game/${gameId}/image`, { ...img }).then(() => {
@@ -22,10 +24,16 @@ export const CreateImageContainer = () => {
     });
   };
 
+  useEffect(() => {
+    api
+      .get<Game>(`/admin/game/${gameId}`)
+      .then((response) => setGame(response.data));
+  }, []);
+
   return (
     <Container>
       <PageTitle className="pt-4" title="Add New Image" />
-      <ModifyImageForm onSubmit={handleSubmit} />
+      {game && <ModifyImageForm onSubmit={handleSubmit} game={game} />}
     </Container>
   );
 };

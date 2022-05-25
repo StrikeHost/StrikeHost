@@ -32,14 +32,7 @@ export class GameController {
     @Param('gameId') gameId: string,
     @Body() updateGameDto: CreateGameDTO,
   ) {
-    const game = await this.gameService.getGame(gameId);
-
-    game.slug = updateGameDto.slug;
-    game.name = updateGameDto.name;
-
-    await game.save();
-
-    return game;
+    return await this.gameService.updateGame(gameId, updateGameDto);
   }
 
   @Post(':gameId/image')
