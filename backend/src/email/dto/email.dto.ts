@@ -1,8 +1,15 @@
-import { User } from 'src/user/user.entity';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class EmailDTO {
-  to: string | User;
+  @IsEmail()
+  @IsNotEmpty()
+  to: string;
+
+  @IsNotEmpty()
   subject: string;
+
+  @IsNotEmpty()
   template: string;
+
   data: Record<string, any>;
 }

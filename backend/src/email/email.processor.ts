@@ -6,39 +6,41 @@ import {
   Process,
   Processor,
 } from '@nestjs/bull';
+import { Injectable } from '@nestjs/common';
 
-import { Mail } from './Mail';
 import { EmailDTO } from './dto/email.dto';
-import { User } from 'src/user/user.entity';
+import { MailerService } from '@nestjs-modules/mailer';
 
+@Injectable()
 @Processor('email')
 export class EmailProcessor {
-  @OnQueueActive()
-  onActive(job: Job) {
-    console.log('Email job started');
-  }
+  constructor(private readonly mailerService: MailerService) {}
 
   @OnQueueError()
   onError(error: Error) {
-    console.log('There was an error');
+    console.log('There was an error', error);
   }
 
-  @OnQueueResumed()
-  onResume(job: Job) {
-    console.log('resume');
-  }
-
-  @Process('verify-email')
+  @Process('email')
   async handle(job: Job<EmailDTO>) {
     const { to, subject, template, data } = job.data;
-    console.log('email handle');
+    data.subject = subject;
 
-    const mail = new Mail()
-      .to(to instanceof User ? to.email : to)
-      .subject(subject)
-      .template(template)
-      .with(data);
+    console.log(to, subject, template, data);
+    this.mailerService
+      .sendMail({
+        to,
+        subject,
+        template,
+        context: data,
+      })
+      .then((e) => {
+        console.log(e);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
 
-    await mail.send();
+    return true;
   }
 }
