@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 export interface ButtonProps {
+  fill?: boolean;
   className?: string;
   onClick?: () => void;
   children: React.ReactNode;
@@ -23,13 +24,18 @@ export const Button = ({
   }
 };
 
-const StyledButton = styled.div`
+const StyledButton = styled.button<{ fill?: boolean }>`
+  all: unset;
+
   color: #fff;
   cursor: pointer;
-  width: fit-content;
-  border-radius: 4px;
+  border-radius: 2px;
+  text-align: center;
   height: fit-content;
   padding: 0.4rem 0.6rem;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  width: ${(props) => (props.fill ? "100%" : "fit-content")};
 
   &:hover {
     color: #fff;
@@ -38,7 +44,7 @@ const StyledButton = styled.div`
 `;
 
 const StyledPrimaryButton = styled(StyledButton)`
-  background-color: var(--primary);
+  background-color: var(--accent);
 `;
 
 const StyledSuccessButton = styled(StyledButton)`

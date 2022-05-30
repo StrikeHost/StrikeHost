@@ -9,6 +9,7 @@ export interface User {
   updated_at: Date;
   last_name: string;
   first_name: string;
+  resource_allocations: ResourceAllocation[];
 }
 
 export interface ResourceAllocation {

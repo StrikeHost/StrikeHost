@@ -45,43 +45,45 @@ export const AgentsContainer = () => {
     );
   };
 
-  return (
-    <>
-      <Container>
-        <PageTitle
-          className="pt-4"
-          title="Agents"
-          action="Add Agent"
-          onClick={() => setIsAddAgentModalOpen(true)}
-        />
-        <TableMk2
-          cols={4}
-          renderRow={renderRow}
-          columns={["IP Address", "CPU Cores", "Memory", "Created At"]}
-          sourceUrl="/admin/agent"
-        />
-      </Container>
-      <Modal
-        isShown={isAddAgentModalOpen}
-        onClose={() => setIsAddAgentModalOpen(false)}
-        title="Add Agent"
-      >
-        <Form>
-          <Form.Group className="mb-3" controlId="ip">
-            <Form.Label>IP Address</Form.Label>
-            <Form.Control
-              type="text"
-              id="ipAddress"
-              value={ipAddress}
-              placeholder="IP Address"
-              onChange={(event) => setIpAddress(event.currentTarget.value)}
-            />
-          </Form.Group>
-          <Button variant="primary" onClick={handleAddAgent}>
-            Add Agent
-          </Button>
-        </Form>
-      </Modal>
-    </>
-  );
+  return null;
+
+  // return (
+  //   <>
+  //     <Container>
+  //       <PageTitle
+  //         className="pt-4"
+  //         title="Agents"
+  //         action="Add Agent"
+  //         onClick={() => setIsAddAgentModalOpen(true)}
+  //       />
+  //       <TableMk2
+  //         cols={4}
+  //         renderRow={renderRow}
+  //         columns={["IP Address", "CPU Cores", "Memory", "Created At"]}
+  //         sourceUrl="/admin/agent"
+  //       />
+  //     </Container>
+  //     <Modal
+  //       isShown={isAddAgentModalOpen}
+  //       onClose={() => setIsAddAgentModalOpen(false)}
+  //       title="Add Agent"
+  //     >
+  //       <Form>
+  //         <Form.Group className="mb-3" controlId="ip">
+  //           <Form.Label>IP Address</Form.Label>
+  //           <Form.Control
+  //             type="text"
+  //             id="ipAddress"
+  //             value={ipAddress}
+  //             placeholder="IP Address"
+  //             onChange={(event) => setIpAddress(event.currentTarget.value)}
+  //           />
+  //         </Form.Group>
+  //         <Button variant="primary" onClick={handleAddAgent}>
+  //           Add Agent
+  //         </Button>
+  //       </Form>
+  //     </Modal>
+  //   </>
+  // );
 };

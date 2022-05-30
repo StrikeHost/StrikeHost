@@ -22,6 +22,8 @@ export class UserController {
     return await this.userService.getUser(userId, [
       'instances',
       'instances.image',
+      'resource_allocations',
+      'resource_allocations.instance',
     ]);
   }
 

@@ -202,7 +202,7 @@ export const ManageAgentConfigContainer = ({
           </Button>
         </StyledOptionContainer>
       </StyledContainer>
-      <Modal
+      {/* <Modal
         isShown={isUpdateModalOpen}
         title="Update agent"
         onClose={() => setIsUpdateModalOpen(false)}
@@ -279,7 +279,7 @@ export const ManageAgentConfigContainer = ({
         <Button variant="danger" onClick={handleDeleteAgent}>
           Yes, delete this agent
         </Button>
-      </Modal>
+      </Modal> */}
     </>
   );
 };
