@@ -26,11 +26,20 @@ export class UserController {
 
   @Post('confirm')
   @BypassAuth()
-  async confirmEmail(@Body('token') token: string, @Req() req) {
+  async confirmEmail(@Body('token') token: string) {
     const email = await this.userService.decodeEmailToken(token);
     const user = await this.userService.confirmEmail(email);
 
     return user;
+  }
+
+  @Post('verify')
+  async verifyEmail(@Req() req) {
+    const user: User = req.user;
+
+    await this.userService.verifyEmail(user);
+
+    return true; // What should this return?
   }
 
   @Post('account/details')
