@@ -29,10 +29,10 @@ const StyledButton = styled.button<{ fill?: boolean }>`
 
   color: #fff;
   cursor: pointer;
+  padding: 8px 16px;
   border-radius: 2px;
   text-align: center;
   height: fit-content;
-  padding: 0.4rem 0.6rem;
   box-sizing: border-box;
   text-transform: uppercase;
   width: ${(props) => (props.fill ? "100%" : "fit-content")};
