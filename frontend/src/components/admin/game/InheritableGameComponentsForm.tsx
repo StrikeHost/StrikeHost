@@ -2,19 +2,29 @@ import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 
 import { Grid } from "components/Grid";
-import { ArgumentsField } from "./ArgumentsField";
 import { InheritableGameComponents } from "interfaces/Game";
 import { Separator } from "components/text/Separator";
 
 export interface InheritableGameComponentsFormProps {
+<<<<<<< HEAD
   required?: string[];
+=======
+  requiredFields?: string[];
+>>>>>>> bd710091e62da266dc38beb562d4c4b4467c6f8e
   components: InheritableGameComponents;
+  defaultValues?: InheritableGameComponents;
   onChange: (components: InheritableGameComponents) => void;
 }
 
 /**
+<<<<<<< HEAD
  * Formats the arguments list so it can be displayed
  *
+=======
+ * Formats a list of custom arguments so they can be displayed
+ *
+ * @param {Record<string, string>} args
+>>>>>>> bd710091e62da266dc38beb562d4c4b4467c6f8e
  * @returns {string}
  */
 const formatArguments = (args: Record<string, string>) => {
@@ -27,6 +37,8 @@ export const InheritableGameComponentsForm = ({
   required,
   onChange,
   components,
+  defaultValues,
+  requiredFields,
 }: InheritableGameComponentsFormProps) => {
   const [values, setValues] = useState<InheritableGameComponents>(components);
   const [argumentsText, setArgumentsText] = useState<string>(
@@ -43,10 +55,13 @@ export const InheritableGameComponentsForm = ({
    * Invoked on value change
    *
    * @param {string} key
-   * @param {any} value
+   * @param {unknown} value
    */
-  const onValueChange = (key: string, value: any) => {
-    const newValues = { ...values, [key]: value };
+  const onValueChange = (key: string, value: unknown) => {
+    const newValues = {
+      ...components,
+      [key]: value,
+    };
 
     setValues(newValues);
     onChange(newValues);

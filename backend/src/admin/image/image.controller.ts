@@ -11,7 +11,10 @@ export class ImageController {
 
   @Get(':imageId')
   async GetImage(@Param('imageId') imageId: string) {
-    const image = await this.imageService.getImage(imageId, ['versions']);
+    const image = await this.imageService.getImage(imageId, [
+      'game',
+      'versions',
+    ]);
 
     return image;
   }

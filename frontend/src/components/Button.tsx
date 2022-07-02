@@ -23,8 +23,9 @@ export const Button = ({
   }
 };
 
-const StyledButton = styled.div`
+const StyledButton = styled.button`
   color: #fff;
+  border: none;
   cursor: pointer;
   width: fit-content;
   border-radius: 4px;

@@ -12,6 +12,7 @@ export const ArgumentsField = ({
   args,
   onArgumentsChange,
 }: ArgumentsFieldProps) => {
+  console.log(args);
   const currentInput = useRef<HTMLInputElement>(null);
   const [currentField, setCurrentField] = useState<string>("null");
   const [currentIsValue, setCurrentIsValue] = useState<boolean>(false);
@@ -19,14 +20,24 @@ export const ArgumentsField = ({
   const [isBlankValueSelected, setIsBlankValueSelected] =
     useState<boolean>(false);
 
+  const getInputFromRef = () => {
+    return currentInput.current?.children[0];
+  };
+
   /**
    * Invoked on element value field clicked
    *
    * @param {React.MouseEvent<HTMLParagraphElement, MouseEvent>} event
    */
   const handleValueClick = (
-    event: React.MouseEvent<HTMLParagraphElement, MouseEvent>
+    event: React.MouseEvent<HTMLParagraphElement, MouseEvent>,
+    isBlankKey = false,
+    isBlankValue = false
   ) => {
+    console.log("is blank:", isBlankKey, isBlankValue);
+    setIsBlankKeySelected(isBlankKey);
+    setIsBlankValueSelected(isBlankValue);
+
     const element = event.currentTarget;
     const isBlank = element.dataset.blank === "true";
     const isValue = element.dataset.value === "true";
@@ -49,19 +60,23 @@ export const ArgumentsField = ({
     const element = event.target;
 
     if (!element) {
+      console.log("returned here");
       return;
     }
 
     if (!(element instanceof HTMLElement)) {
+      console.log("returned here1");
       handleFieldChange();
       return;
     }
 
     if (currentInput.current?.contains(element)) {
+      console.log("returned here2");
       return;
     }
 
     if (!element.dataset.key || !element.dataset.value) {
+      console.log("returned here3");
       handleFieldChange();
     }
   };
@@ -70,27 +85,44 @@ export const ArgumentsField = ({
    * Invoked when the user clicks out of a field
    */
   const handleFieldChange = () => {
+    const clearValues = () => {
+      setIsBlankKeySelected(false);
+      setIsBlankValueSelected(false);
+      setCurrentField("");
+      setCurrentIsValue(false);
+    };
+
+    console.log("---");
+    console.log(currentIsValue);
+    console.log(isBlankKeySelected);
+    console.log(isBlankValueSelected);
+    console.log("---");
+
     // We need to change the value that's stored in the props
 
     const currentElement = currentInput.current;
+    const currentElementInput: HTMLInputElement =
+      getInputFromRef() as HTMLInputElement;
 
     const isBlank = currentElement?.dataset.blank === "true";
     const isValue = currentElement?.dataset.value === "true";
     const key = currentElement?.dataset.key || "";
+    console.log(args);
 
-    if (isBlank && !isValue) {
-      const newArgs = {
-        ...args,
-      };
+    const newArgs = {
+      ...args,
+    };
+
+    if (isBlankKeySelected && isBlank && !isValue && currentElementInput) {
+      newArgs[currentElementInput.value] = "";
+      clearValues();
+      onArgumentsChange(newArgs);
     }
-
-    setIsBlankKeySelected(false);
-    setIsBlankValueSelected(false);
-    setCurrentField("");
-    setCurrentIsValue(false);
   };
 
   useEffect(() => {
+    console.log("mounted");
+
     document.addEventListener(
       "click",
       (event) => handleOtherClick(event),
@@ -104,8 +136,9 @@ export const ArgumentsField = ({
         <StyledTitle>Key</StyledTitle>
         <StyledValuesContainer>
           {args &&
-            Object.keys(args).map((key) => (
+            Object.keys(args).map((key, index) => (
               <StyledValueItem
+                key={index}
                 data-key={key}
                 data-value={false}
                 onClick={handleValueClick}
@@ -117,14 +150,14 @@ export const ArgumentsField = ({
                 {currentField === key && !currentIsValue ? (
                   <StyledValueItemInput type="text" autoFocus />
                 ) : (
-                  <StyledValueItemText>{args[key]}</StyledValueItemText>
+                  <StyledValueItemText>{key}</StyledValueItemText>
                 )}
               </StyledValueItem>
             ))}
           <StyledValueItem
             data-blank={true}
             data-value={false}
-            onClick={handleValueClick}
+            onClick={(event) => handleValueClick(event, true)}
             needsPadding={!isBlankKeySelected}
             ref={isBlankKeySelected ? currentInput : null}
           >
@@ -140,8 +173,9 @@ export const ArgumentsField = ({
         <StyledTitle>Value</StyledTitle>
         <StyledValuesContainer>
           {args &&
-            Object.keys(args).map((key) => (
+            Object.keys(args).map((key, index) => (
               <StyledValueItem
+                key={index}
                 data-key={key}
                 data-value={true}
                 onClick={(event) => handleValueClick(event)}

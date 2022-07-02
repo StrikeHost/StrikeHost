@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
 
 export class CreateImageDto {
   @IsString()
@@ -8,8 +8,22 @@ export class CreateImageDto {
   slug: string;
 
   @IsString()
-  docker_name: string;
+  @IsOptional()
+  docker_name?: string;
 
   @IsNumber()
-  min_memory: number;
+  @IsOptional()
+  min_memory?: number;
+
+  @IsNumber()
+  @IsOptional()
+  min_storage?: number;
+
+  @IsNumber()
+  @IsOptional()
+  min_cpu?: number;
+
+  @IsObject()
+  @IsOptional()
+  arguments?: Record<string, string>;
 }
