@@ -23,6 +23,7 @@ export const ModifyGameForm = ({ game, onSubmit }: ModifyGameFormProps) => {
    */
   const handleFormSubmit = () => {
     const game: Partial<Game> = {
+      ...gameVal,
       name,
       slug,
     };
@@ -58,6 +59,7 @@ export const ModifyGameForm = ({ game, onSubmit }: ModifyGameFormProps) => {
         />
       </Form.Group>
       <InheritableGameComponentsForm
+        required={["docker_name"]}
         components={gameVal}
         onChange={(components) => setGameVal(components as Game)}
       />
