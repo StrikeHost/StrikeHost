@@ -34,10 +34,15 @@ export class UserService {
     email: string,
     includePassword?: boolean,
   ): Promise<User> {
-    const user = await this.userRepository.findOne({
-      where: { email },
-      select: ['password'],
-    });
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .select([
+        'user.id as id',
+        'user.email as email',
+        'user.password as password',
+      ])
+      .where('user.email = :email', { email })
+      .getRawOne();
 
     if (!user) {
       throw new NotFoundException('User not found!');

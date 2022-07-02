@@ -36,7 +36,7 @@ export class AuthService {
   ): Promise<{ access_token: string }> {
     const user = await this.userService.getUserByEmail(email);
 
-    const validate = await user.comparePassword(password);
+    const validate = await User.ComparePassword(password, user.password);
     if (validate) {
       return this.loginWithCredentials(user);
     }
@@ -65,7 +65,7 @@ export class AuthService {
   }
 
   private async loginWithCredentials(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+    const payload = { username: user.email, sub: user.id };
 
     return {
       access_token: this.jwtTokenService.sign(payload, {
