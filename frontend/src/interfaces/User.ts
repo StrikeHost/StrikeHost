@@ -16,6 +16,7 @@ export interface User {
 export interface ResourceAllocation {
   id: string;
   user: User;
+  cpus: number;
   memory: number;
   storage: number;
   created_at: Date;

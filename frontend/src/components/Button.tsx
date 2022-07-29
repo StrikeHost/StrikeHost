@@ -41,6 +41,8 @@ const StyledButton = styled.button<{ fill?: boolean }>`
   &:hover {
     color: #fff;
     filter: brightness(85%);
+
+    cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   }
 `;
 

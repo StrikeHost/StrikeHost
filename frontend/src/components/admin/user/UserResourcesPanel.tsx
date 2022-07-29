@@ -2,14 +2,15 @@ import toast from "react-hot-toast";
 import React, { useState } from "react";
 
 import { api } from "utils/api";
-import { User } from "interfaces/User";
+import { ResourceAllocation, User } from "interfaces/User";
 import { Grid } from "components/Grid";
 import { Panel } from "components/Panel";
-import { Table } from "components/Table";
 import { Modal } from "components/Modal";
 import { Button } from "components/Button";
 import { Input } from "components/form/Input";
 import { Label } from "components/form/Label";
+import { TableMk2 } from "components/TableMk2";
+import { formatDate } from "utils/misc";
 
 export interface UserResourcesPanelProps {
   user: User;
@@ -54,6 +55,24 @@ export const UserResourcesPanel = ({
       });
   };
 
+  const renderRow = (
+    row: ResourceAllocation,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    Cell: (props: any) => JSX.Element
+  ) => {
+    return (
+      <>
+        <Cell>{row.instance?.agent?.ip || "-"}</Cell>
+        <Cell>{row.cpus}</Cell>
+        <Cell>{row.memory}MB</Cell>
+        <Cell>{row.storage}GB</Cell>
+        <Cell></Cell>
+        <Cell>{row.instance?.agent?.ip || "-"}</Cell>
+        <Cell>{formatDate(row.created_at)}</Cell>
+      </>
+    );
+  };
+
   return (
     <>
       <Panel
@@ -62,7 +81,20 @@ export const UserResourcesPanel = ({
         actionText="Create"
         onActionClick={() => setIsAllocateModalShown(true)}
       >
-        <Table data={user.resource_allocations} keys={["ID"]} />
+        <TableMk2
+          sourceUrl={`/admin/user/${user.id}/resource`}
+          cols={7}
+          columns={[
+            "Game",
+            "CPU",
+            "Memory",
+            "Storage",
+            "Uptime",
+            "Agent",
+            "Created At",
+          ]}
+          renderRow={renderRow}
+        />
       </Panel>
       <Modal
         isShown={isAllocateModalShown}

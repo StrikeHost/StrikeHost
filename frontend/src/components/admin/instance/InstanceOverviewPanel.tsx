@@ -69,9 +69,13 @@ export const InstanceOverviewPanel = ({ instance }: InstanceOverviewProps) => {
               Stop
             </Button>
           )}
-          <Button variant="primary">Restart</Button>
+          <Button variant="primary" disabled>
+            Restart
+          </Button>
         </StyledInnerContainer>
-        <Button variant="danger">Delete</Button>
+        <Button variant="danger" disabled>
+          Delete
+        </Button>
       </StyledActionsContainer>
     </Panel>
   );
