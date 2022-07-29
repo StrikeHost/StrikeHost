@@ -6,25 +6,16 @@ import { InheritableGameComponents } from "interfaces/Game";
 import { Separator } from "components/text/Separator";
 
 export interface InheritableGameComponentsFormProps {
-<<<<<<< HEAD
-  required?: string[];
-=======
   requiredFields?: string[];
->>>>>>> bd710091e62da266dc38beb562d4c4b4467c6f8e
   components: InheritableGameComponents;
   defaultValues?: InheritableGameComponents;
   onChange: (components: InheritableGameComponents) => void;
 }
 
 /**
-<<<<<<< HEAD
- * Formats the arguments list so it can be displayed
- *
-=======
  * Formats a list of custom arguments so they can be displayed
  *
  * @param {Record<string, string>} args
->>>>>>> bd710091e62da266dc38beb562d4c4b4467c6f8e
  * @returns {string}
  */
 const formatArguments = (args: Record<string, string>) => {
@@ -34,7 +25,6 @@ const formatArguments = (args: Record<string, string>) => {
 };
 
 export const InheritableGameComponentsForm = ({
-  required,
   onChange,
   components,
   defaultValues,
@@ -46,7 +36,7 @@ export const InheritableGameComponentsForm = ({
   );
 
   const isRequired = (element: string) => {
-    const index = required?.indexOf(element);
+    const index = requiredFields?.indexOf(element);
 
     return Boolean(index && index > -1);
   };
