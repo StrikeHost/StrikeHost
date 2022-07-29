@@ -21,7 +21,7 @@ export class InstanceService {
     count: number = 20,
   ): Promise<PaginatedResponse<Instance>> {
     const [results, selected] = await this.instanceRepository.findAndCount({
-      relations: ['user'],
+      relations: ['user', 'agent', 'image', 'version', 'image.game'],
       skip,
       take: count,
     });

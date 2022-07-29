@@ -29,31 +29,12 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { AdminModule } from './admin/admin.module';
 import { WebsocketModule } from './websocket/websocket.module';
+import { typeOrmAsyncConfig } from './config/typeorm.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: process.env.DB_HOST,
-      port: Number.parseInt(process.env.DB_PORT),
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE,
-      entities: [
-        Agent,
-        AgentSecret,
-        Event,
-        Game,
-        Image,
-        ImageVersion,
-        Instance,
-        ResourceAllocation,
-        Setting,
-        User,
-      ],
-      synchronize: true,
-    }),
+    TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
     UserModule,
     AuthModule,
     InstanceModule,

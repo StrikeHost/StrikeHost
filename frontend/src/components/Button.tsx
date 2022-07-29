@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 
 export interface ButtonProps {
+  fill?: boolean;
+  disabled?: boolean;
   className?: string;
   onClick?: () => void;
   children: React.ReactNode;
@@ -23,23 +25,30 @@ export const Button = ({
   }
 };
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<{ fill?: boolean }>`
+  all: unset;
+
   color: #fff;
   border: none;
   cursor: pointer;
-  width: fit-content;
-  border-radius: 4px;
+  padding: 8px 16px;
+  border-radius: 2px;
+  text-align: center;
   height: fit-content;
-  padding: 0.4rem 0.6rem;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  width: ${(props) => (props.fill ? "100%" : "fit-content")};
 
   &:hover {
     color: #fff;
     filter: brightness(85%);
+
+    cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   }
 `;
 
 const StyledPrimaryButton = styled(StyledButton)`
-  background-color: var(--primary);
+  background-color: var(--accent);
 `;
 
 const StyledSuccessButton = styled(StyledButton)`

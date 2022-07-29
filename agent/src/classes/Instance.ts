@@ -44,6 +44,7 @@ export class Instance {
       this.instance.storage
     );
     this.changeState(InstanceStatusType.STOPPED);
+    Database.createInstance(this.instance);
   }
 
   public async start() {

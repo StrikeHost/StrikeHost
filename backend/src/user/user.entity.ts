@@ -58,4 +58,19 @@ export class User extends BaseEntity {
   async comparePassword(password: string) {
     return await compare(password, this.password);
   }
+
+  /**
+   * Compares the given password with the user's password.
+   *
+   * @param {string} password
+   * @param {string} password2
+   *
+   * @returns {boolean}
+   */
+  static async ComparePassword(
+    password: string,
+    password2: string,
+  ): Promise<boolean> {
+    return await compare(password, password2);
+  }
 }

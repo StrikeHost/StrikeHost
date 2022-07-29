@@ -18,6 +18,7 @@ export class UserService {
     const [results, selected] = await this.userRepository.findAndCount({
       skip,
       take: count,
+      relations: ['instances'],
     });
 
     return {
@@ -41,5 +42,17 @@ export class UserService {
     }
 
     return user;
+  }
+
+  /**
+   * Delete a user by id
+   * TODO: Delete all instances and resource allocations and trigger agent to delete instances
+   *
+   * @param userId
+   */
+  async deleteUser(userId: string): Promise<void> {
+    const user = await this.getUser(userId);
+
+    await this.userRepository.remove(user);
   }
 }

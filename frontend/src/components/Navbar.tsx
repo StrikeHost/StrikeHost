@@ -33,7 +33,9 @@ export const Navbar = connect(mapStateToProps)(
     return (
       <StyledNavbar variant="dark" expand="lg" id="navbar">
         <Container>
-          <BNavbar.Brand href="#home">{PRODUCT_NAME}</BNavbar.Brand>
+          <StyledBrand as={Link} to="/">
+            {PRODUCT_NAME}
+          </StyledBrand>
           <BNavbar.Toggle aria-controls="basic-navbar-nav" />
           <BNavbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
@@ -73,4 +75,12 @@ export const Navbar = connect(mapStateToProps)(
 
 const StyledNavbar = styled(BNavbar)`
   background-color: var(--bg-secondary);
+`;
+
+const StyledBrand = styled(BNavbar.Brand)`
+  font-size: 32px;
+  font-weight: 600;
+  margin-right: 4rem;
+  text-transform: uppercase;
+  color: var(--accent) !important;
 `;

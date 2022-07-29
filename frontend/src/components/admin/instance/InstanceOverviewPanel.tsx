@@ -3,14 +3,17 @@ import styled from "styled-components";
 import { Grid } from "components/Grid";
 import { formatDate } from "utils/misc";
 import { Panel } from "components/Panel";
-import { Instance } from "interfaces/Instance";
+import { Instance, InstanceStatusType } from "interfaces/Instance";
 import { Button } from "components/Button";
+import { useInstance } from "hooks/useInstance";
 
 export interface InstanceOverviewProps {
   instance: Instance;
 }
 
 export const InstanceOverviewPanel = ({ instance }: InstanceOverviewProps) => {
+  const { isLoading, startInstance, stopInstance } = useInstance(instance.id);
+
   return (
     <Panel title="Instance" span={3}>
       <Grid columns={4} gap="1rem" className="p-4">
@@ -49,10 +52,30 @@ export const InstanceOverviewPanel = ({ instance }: InstanceOverviewProps) => {
       </Grid>
       <StyledActionsContainer className="px-4 pb-4">
         <StyledInnerContainer>
-          <Button variant="primary">Stop</Button>
-          <Button variant="primary">Restart</Button>
+          {instance.status === InstanceStatusType.STOPPED ? (
+            <Button
+              variant="primary"
+              onClick={startInstance}
+              disabled={isLoading}
+            >
+              Start
+            </Button>
+          ) : (
+            <Button
+              variant="primary"
+              onClick={stopInstance}
+              disabled={isLoading}
+            >
+              Stop
+            </Button>
+          )}
+          <Button variant="primary" disabled>
+            Restart
+          </Button>
         </StyledInnerContainer>
-        <Button variant="danger">Delete</Button>
+        <Button variant="danger" disabled>
+          Delete
+        </Button>
       </StyledActionsContainer>
     </Panel>
   );
