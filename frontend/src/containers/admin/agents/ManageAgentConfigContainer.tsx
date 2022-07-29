@@ -202,9 +202,9 @@ export const ManageAgentConfigContainer = ({
           </Button>
         </StyledOptionContainer>
       </StyledContainer>
-      {/* <Modal
+      <Modal
         isShown={isUpdateModalOpen}
-        title="Update agent"
+        // title="Update agent"
         onClose={() => setIsUpdateModalOpen(false)}
       >
         <p>
@@ -215,7 +215,7 @@ export const ManageAgentConfigContainer = ({
       </Modal>
       <Modal
         isShown={isRestartModalOpen}
-        title="Restart agent"
+        // title="Restart agent"
         onClose={() => setIsRestartModalOpen(false)}
       >
         <p>
@@ -226,7 +226,7 @@ export const ManageAgentConfigContainer = ({
       </Modal>
       <Modal
         isShown={isEraseModalOpen}
-        title="Erase local database and restart agent"
+        // title="Erase local database and restart agent"
         onClose={() => setIsEraseModalOpen(false)}
       >
         <p>
@@ -240,7 +240,7 @@ export const ManageAgentConfigContainer = ({
         </Button>
       </Modal>
       <Modal
-        title="Add Agent Secret"
+        // title="Add Agent Secret"
         onClose={() => setIsAddSecretModalOpen(false)}
         isShown={isAddSecretModalOpen}
       >
@@ -263,7 +263,7 @@ export const ManageAgentConfigContainer = ({
         )}
       </Modal>
       <Modal
-        title="Delete Agent"
+        // title="Delete Agent"
         onClose={() => setIsDeleteModalOpen(false)}
         isShown={isDeleteModalOpen}
       >
@@ -279,7 +279,7 @@ export const ManageAgentConfigContainer = ({
         <Button variant="danger" onClick={handleDeleteAgent}>
           Yes, delete this agent
         </Button>
-      </Modal> */}
+      </Modal>
     </>
   );
 };

@@ -30,7 +30,7 @@ export class AdminService {
 
   private getInstanceCount = async () => {
     const results = await this.instanceRepository
-      .createQueryBuilder()
+      .createQueryBuilder('instance')
       .select(['count(instance.id) as count', 'created_at'])
       .groupBy('created_at')
       .orderBy('created_at', 'ASC')

@@ -18,6 +18,7 @@ export class UserService {
     const [results, selected] = await this.userRepository.findAndCount({
       skip,
       take: count,
+      relations: ['instances'],
     });
 
     return {

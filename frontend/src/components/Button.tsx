@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 export interface ButtonProps {
   fill?: boolean;
+  disabled?: boolean;
   className?: string;
   onClick?: () => void;
   children: React.ReactNode;
