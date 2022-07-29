@@ -1,15 +1,24 @@
 import styled from "styled-components";
+import { Button } from "./Button";
 import { SecondaryText } from "./text/SecondaryText";
 
 export interface PanelProps {
   span?: number;
   className?: string;
+  actionText?: string;
   onClick?: () => unknown;
+  onActionClick?: () => unknown;
   title: React.ReactNode | React.ReactNode[];
   children?: React.ReactNode | React.ReactNode[];
 }
 
-export const Panel = ({ title, children, ...props }: PanelProps) => {
+export const Panel = ({
+  title,
+  children,
+  actionText,
+  onActionClick,
+  ...props
+}: PanelProps) => {
   return (
     <StyledContainer {...props} clickable={!!props.onClick}>
       <StyledTitleContainer>
@@ -18,6 +27,7 @@ export const Panel = ({ title, children, ...props }: PanelProps) => {
         ) : (
           title
         )}
+        {actionText && <Button onClick={onActionClick}>{actionText}</Button>}
       </StyledTitleContainer>
       {children && <StyledContentContainer>{children}</StyledContentContainer>}
     </StyledContainer>

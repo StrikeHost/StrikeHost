@@ -45,6 +45,8 @@ export const AgentsContainer = () => {
     );
   };
 
+  // return null;
+
   return (
     <>
       <Container>
@@ -64,7 +66,6 @@ export const AgentsContainer = () => {
       <Modal
         isShown={isAddAgentModalOpen}
         onClose={() => setIsAddAgentModalOpen(false)}
-        title="Add Agent"
       >
         <Form>
           <Form.Group className="mb-3" controlId="ip">

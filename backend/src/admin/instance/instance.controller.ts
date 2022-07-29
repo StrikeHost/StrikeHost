@@ -16,9 +16,13 @@ export class InstanceController {
   async GetInstance(@Param('instanceId') instanceId: string) {
     return await this.instanceService.getInstance(instanceId, [
       'user',
-      'game',
-      'game.image',
-      'game.image.version',
+      // 'game',
+      // 'game.image',
+      // 'game.image.version',
+      'image',
+      'version',
+      'image.game',
+      'agent',
     ]);
   }
 }

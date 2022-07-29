@@ -32,7 +32,7 @@ export const ManageInstanceContainer = () => {
             <InstanceOverviewPanel instance={instance} />
             <GridActionBox value={`${instance.memory}MB`} subText="Memory" />
             <GridActionBox value={instance.cpu || ""} subText="CPU" />
-            <GridActionBox value={instance.storage} subText="Storage" />
+            <GridActionBox value={`${instance.storage}GB`} subText="Storage" />
             <Panel title="Console" span={3}></Panel>
             <InstanceFtpPanel instance={instance} />
           </Grid>

@@ -9,7 +9,7 @@ export interface InstanceFtpPanelProps {
 
 export const InstanceFtpPanel = ({ instance }: InstanceFtpPanelProps) => {
   return (
-    <Panel title="SSH & FTP Access" span={3}>
+    <Panel title="SSH &amp; SFTP Access" span={3}>
       <StyledContainer>
         <div>
           <div>

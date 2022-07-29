@@ -103,7 +103,12 @@ export class WebsocketService {
    * @param {any} data
    */
   public sendMessage(clientId: string, event: ServerMessageType, data: any) {
-    this._clientSockets[clientId].emit(event, data);
+    const success = this._clientSockets[clientId]?.emit(event, data);
+
+    if (success) return;
+
+    // The client isn't connected, log the error
+    // TODO: Log the error
   }
 
   /**

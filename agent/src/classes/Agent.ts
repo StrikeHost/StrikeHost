@@ -146,8 +146,8 @@ export class Agent {
    * @param {string} channel
    */
   public static sendEvent(message: ClientEvent) {
-    const { event, data } = message;
-    this.socket.emit(event, data);
+    const { event, ...data } = message;
+    this.socket.emit(event, { ...data, ...data.data });
   }
 
   public getConnection() {

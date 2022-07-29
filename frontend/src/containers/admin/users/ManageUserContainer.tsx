@@ -7,6 +7,7 @@ import { User } from "interfaces/User";
 import { Grid } from "components/Grid";
 import { UserInfoPanel } from "components/admin/user/UserInfoPanel";
 import { UserBillingPanel } from "components/admin/user/UserBillingPanel";
+import { UserResourcesPanel } from "components/admin/user/UserResourcesPanel";
 
 interface ManageUserContainerParams {
   userId: string;
@@ -17,10 +18,14 @@ export const ManageUserContainer = () => {
 
   const [user, setUser] = useState<User>();
 
-  useEffect(() => {
+  const refreshUser = () => {
     api.get<User>(`/admin/user/${userId}`).then((response) => {
       setUser(response.data);
     });
+  };
+
+  useEffect(() => {
+    refreshUser();
   }, []);
 
   return (
@@ -29,6 +34,7 @@ export const ManageUserContainer = () => {
         <Grid columns={6} gap="1rem">
           <UserInfoPanel user={user} />
           <UserBillingPanel />
+          <UserResourcesPanel user={user} refresh={refreshUser} />
         </Grid>
       )}
     </Container>
