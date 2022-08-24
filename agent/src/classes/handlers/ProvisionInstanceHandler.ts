@@ -3,7 +3,10 @@ import { ProvisionInstanceEvent } from "../../interfaces/ServerEvents";
 
 export class ProvisionInstanceHandler extends Handler {
   public async dispatch(event: ProvisionInstanceEvent) {
-    const instance = this.agent.createInstance(event.instance);
+    const instance = this.agent.createInstance(
+      event.instance,
+      event.inheritableInstance
+    );
     instance.provision();
   }
 }

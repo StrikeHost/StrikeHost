@@ -14,7 +14,6 @@ import { CreateInstanceDTO } from './dto/create-instance.dto';
 import { InstanceService } from './instance.service';
 
 @Controller('instance')
-@UseGuards(JwtAuthGuard)
 export class InstanceController {
   constructor(private instanceService: InstanceService) {}
 

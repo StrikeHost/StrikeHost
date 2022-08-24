@@ -7,6 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { AgentService } from 'src/agent/agent.service';
 import { ServerMessageType } from 'src/enums/WebsocketMessageType';
+import { GameRepository } from 'src/game/game.repository';
 import { ImageVersionRepository } from 'src/image-version/image-version.repository';
 import { ImageRepository } from 'src/image/image.repository';
 import { ResourceAllocationService } from 'src/resource-allocation/resource-allocation.service';
@@ -23,6 +24,8 @@ export class InstanceService {
   constructor(
     @InjectRepository(InstanceRepository)
     private instanceRepository: InstanceRepository,
+    @InjectRepository(GameRepository)
+    private gameRepository: GameRepository,
     @InjectRepository(ImageRepository)
     private imageRepository: ImageRepository,
     @InjectRepository(ImageVersionRepository)
@@ -97,6 +100,7 @@ export class InstanceService {
       throw new NotFoundException('No available allocations!');
     }
 
+    const game = await this.gameRepository.findOne(createInstanceDto.game_id);
     const image = await this.imageRepository.findOne(
       createInstanceDto.image_id,
     );
@@ -116,13 +120,23 @@ export class InstanceService {
       allocations[0],
     );
 
+    console.log(game);
+    console.log(image);
+    console.log(imageVersion);
+
+    const inheritableInstance = {
+      ...game,
+      ...image,
+      ...imageVersion,
+    };
+
     // Trigger the agent instance creation process
     const wsClientId = this.websocketService.getAgentClientId(agent.id);
     // TODO: handle if the agent isn't currently running - this should be queued instead
     this.websocketService.sendMessage(
       wsClientId,
       ServerMessageType.PROVISION_INSTANCE,
-      { instance },
+      { instance, inheritableInstance },
     );
 
     return instance;

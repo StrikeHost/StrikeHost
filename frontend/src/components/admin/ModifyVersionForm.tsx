@@ -52,6 +52,7 @@ export const ModifyVersionForm = ({
       console.log(newVals);
 
       setDefaultVals(newVals);
+      // setVersionVal(newVals);
     });
   }, []);
 

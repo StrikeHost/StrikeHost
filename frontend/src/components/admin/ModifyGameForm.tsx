@@ -63,7 +63,7 @@ export const ModifyGameForm = ({ game, onSubmit }: ModifyGameFormProps) => {
       </Form.Group>
       <Separator>Inheritable Properties</Separator>
       <InheritableGameComponentsForm
-        requiredFields={["docker_name"]}
+        requiredFields={[]}
         components={gameVal}
         onChange={(components) => setGameVal(components as Game)}
       />

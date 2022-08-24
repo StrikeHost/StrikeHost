@@ -38,7 +38,17 @@ export const InheritableGameComponentsForm = ({
   const isRequired = (element: string) => {
     const index = requiredFields?.indexOf(element);
 
-    return Boolean(index && index > -1);
+    return (
+      Boolean(index && index > -1) &&
+      !(
+        defaultValues &&
+        Object.entries(defaultValues).some(([key, value]) => {
+          if (key === element && value !== undefined) {
+            return true;
+          }
+        })
+      )
+    );
   };
 
   /**
@@ -99,6 +109,7 @@ export const InheritableGameComponentsForm = ({
               onValueChange("docker_name", ev.currentTarget.value)
             }
             required={isRequired("docker_name")}
+            placeholder={defaultValues?.docker_name}
           />
         </Form.Group>
         {/* min memory, min storage and min cpus */}
@@ -110,6 +121,11 @@ export const InheritableGameComponentsForm = ({
             onChange={(ev) =>
               onValueChange("min_memory", parseInt(ev.currentTarget.value))
             }
+            placeholder={
+              defaultValues?.min_memory
+                ? String(defaultValues?.min_memory)
+                : undefined
+            }
           />
         </Form.Group>
         <Form.Group>
@@ -120,6 +136,11 @@ export const InheritableGameComponentsForm = ({
             onChange={(ev) =>
               onValueChange("min_storage", parseInt(ev.currentTarget.value))
             }
+            placeholder={
+              defaultValues?.min_storage
+                ? String(defaultValues?.min_storage)
+                : undefined
+            }
           />
         </Form.Group>
         <Form.Group>
@@ -129,6 +150,11 @@ export const InheritableGameComponentsForm = ({
             value={values.min_cpu}
             onChange={(ev) =>
               onValueChange("min_cpu", parseInt(ev.currentTarget.value))
+            }
+            placeholder={
+              defaultValues?.min_cpu
+                ? String(defaultValues?.min_cpu)
+                : undefined
             }
           />
         </Form.Group>
@@ -144,13 +170,17 @@ export const InheritableGameComponentsForm = ({
             type="text"
             value={argumentsText}
             as="textarea"
-            required={true}
+            required={isRequired("arguments")}
             onChange={(event) =>
               handleArgumentsChange(
                 event as React.ChangeEvent<HTMLTextAreaElement>
               )
             }
-            placeholder={"arg1=value1\narg2=value2"}
+            placeholder={
+              (defaultValues?.arguments &&
+                formatArguments(defaultValues?.arguments)) ||
+              "arg1=value1\narg2=value2"
+            }
           />
         </Form.Group>
       </Grid>
