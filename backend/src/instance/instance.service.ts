@@ -7,7 +7,9 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { AgentService } from 'src/agent/agent.service';
 import { ServerMessageType } from 'src/enums/WebsocketMessageType';
+import { Game } from 'src/game/game.entity';
 import { GameRepository } from 'src/game/game.repository';
+import { ImageVersion } from 'src/image-version/image-version.entity';
 import { ImageVersionRepository } from 'src/image-version/image-version.repository';
 import { ImageRepository } from 'src/image/image.repository';
 import { ResourceAllocationService } from 'src/resource-allocation/resource-allocation.service';
@@ -17,6 +19,7 @@ import { CreateInstanceDTO } from './dto/create-instance.dto';
 import { InstanceConsoleDto } from './dto/instance-console.dto';
 import { InstanceStateChangeDto } from './dto/instance-state-change.dto';
 import { Instance } from './instance.entity';
+import { Image } from 'src/image/image.entity';
 import { InstanceRepository } from './instance.repository';
 
 @Injectable()
@@ -120,15 +123,12 @@ export class InstanceService {
       allocations[0],
     );
 
-    console.log(game);
-    console.log(image);
-    console.log(imageVersion);
-
-    const inheritableInstance = {
-      ...game,
-      ...image,
-      ...imageVersion,
-    };
+    // Combine the inheritable properties of the game, image and image version
+    const inheritableInstance = this.resolveInheritableProperties(
+      game,
+      image,
+      imageVersion,
+    );
 
     // Trigger the agent instance creation process
     const wsClientId = this.websocketService.getAgentClientId(agent.id);
@@ -239,5 +239,39 @@ export class InstanceService {
         instanceStateChangeDto,
       );
     }
+  }
+
+  /**
+   * Combines the attributes of the passed game, image, and image version
+   *
+   * @param {Game} game
+   * @param {Image} image
+   * @param {ImageVersion} imageVersion
+   * @returns
+   */
+  private resolveInheritableProperties(
+    game: Game,
+    image: Image,
+    imageVersion: ImageVersion,
+  ) {
+    const toReturn = {};
+
+    for (const [key, value] of Object.entries(game)) {
+      if (value !== null) {
+        toReturn[key] = value;
+      }
+    }
+    for (const [key, value] of Object.entries(image)) {
+      if (value !== null) {
+        toReturn[key] = value;
+      }
+    }
+    for (const [key, value] of Object.entries(imageVersion)) {
+      if (value !== null) {
+        toReturn[key] = value;
+      }
+    }
+
+    return toReturn;
   }
 }
