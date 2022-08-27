@@ -20,6 +20,19 @@ export interface ImageVersion {
   arguments: Record<string, string>;
 }
 
+export interface InheritableInstance {
+  arguments: Record<string, string>;
+  docker_name: string;
+  min_memory: number;
+  min_storage: number;
+  min_cpu: number;
+}
+
+export interface SerializedInstance {
+  instance: Instance;
+  inheritableInstance: InheritableInstance;
+}
+
 export enum InstanceStatusType {
   STOPPED = "STOPPED",
   STARTING = "STARTING",

@@ -29,6 +29,7 @@ const StyledButton = styled.button<{ fill?: boolean }>`
   all: unset;
 
   color: #fff;
+  border: none;
   cursor: pointer;
   padding: 8px 16px;
   border-radius: 2px;

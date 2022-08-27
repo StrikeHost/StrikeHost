@@ -1,5 +1,5 @@
 import { Agent } from "./Agent";
-import { Instance } from "./Instance";
+import { InheritableInstance, Instance } from "./Instance";
 
 export enum ServerEventName {
   RESET_AGENT = "agent.reset",
@@ -35,6 +35,7 @@ export interface StopInstanceEvent extends ServerEvent {
 
 export interface ProvisionInstanceEvent extends ServerEvent {
   instance: Instance;
+  inheritableInstance: InheritableInstance;
 }
 
 export interface DeleteInstanceEvent extends ServerEvent {

@@ -48,11 +48,23 @@ export class ImageService {
   ): Promise<Image> {
     const image = await this.getImage(imageId);
 
-    const { name, slug, docker_name, min_memory } = updateImageDto;
+    const {
+      name,
+      slug,
+      docker_name,
+      min_memory,
+      arguments: args,
+      min_cpu,
+      min_storage,
+    } = updateImageDto;
 
     image.name = name;
+    image.arguments = args;
     image.docker_name = docker_name;
+    image.min_cpu = min_cpu;
     image.min_memory = min_memory;
+    image.min_storage = min_storage;
+
     await image.save();
 
     return image;
@@ -91,12 +103,23 @@ export class ImageService {
   ): Promise<ImageVersion> {
     const image = await this.getImage(imageId);
 
-    const { name, arguments: args } = createImageVersionDto;
+    const {
+      name,
+      arguments: args,
+      docker_name,
+      min_cpu,
+      min_memory,
+      min_storage,
+    } = createImageVersionDto;
 
     const imageVersion = new ImageVersion();
     imageVersion.name = name;
     imageVersion.arguments = args;
     imageVersion.image = image;
+    imageVersion.docker_name = docker_name;
+    imageVersion.min_cpu = min_cpu;
+    imageVersion.min_memory = min_memory;
+    imageVersion.min_storage = min_storage;
     await imageVersion.save();
 
     return imageVersion;

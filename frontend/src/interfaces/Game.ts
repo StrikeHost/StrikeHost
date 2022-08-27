@@ -1,26 +1,31 @@
-export interface Game {
+export interface InheritableGameComponents {
+  arguments?: Record<string, string>;
+  docker_name?: string;
+  min_memory?: number;
+  min_storage?: number;
+  min_cpu?: number;
+}
+
+export interface Game extends InheritableGameComponents {
   id: GameType;
   name: string;
   slug: string;
   images?: Image[];
 }
 
-export interface Image {
+export interface Image extends InheritableGameComponents {
   id: string;
   game?: Game;
   name: string;
   slug: string;
   gameId?: GameType;
-  min_memory?: number;
-  docker_name: string;
   versions?: ImageVersion[];
 }
 
-export interface ImageVersion {
+export interface ImageVersion extends InheritableGameComponents {
   id: string;
   name: string;
   image?: Image;
-  arguments: Record<string, string>;
 }
 
 export interface PackRequirements {
