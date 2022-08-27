@@ -46,39 +46,41 @@ export const AllocateResourceModal = ({
       });
   };
 
-  return (
-    <Modal isShown={isShown} title="Allocate Resource" onClose={onClose}>
-      <Form>
-        <Form.Group className="mb-3" controlId="memory">
-          <Form.Label>Memory</Form.Label>
-          <InputGroup>
-            <Form.Control
-              type="number"
-              id="memory"
-              value={memory}
-              onChange={(event) =>
-                setMemory(Number.parseInt(event.currentTarget.value))
-              }
-            />
-            <InputGroup.Text>MB</InputGroup.Text>
-          </InputGroup>
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="storage">
-          <Form.Label>Storage</Form.Label>
-          <InputGroup>
-            <Form.Control
-              type="number"
-              id="storage"
-              value={storage}
-              onChange={(event) =>
-                setStorage(Number.parseInt(event.currentTarget.value))
-              }
-            />
-            <InputGroup.Text>GB</InputGroup.Text>
-          </InputGroup>
-        </Form.Group>
-        <Button onClick={onSubmit}>Allocate Resource</Button>
-      </Form>
-    </Modal>
-  );
+  return null;
+
+  // return (
+  //   <Modal isShown={isShown} title="Allocate Resource" onClose={onClose}>
+  //     <Form>
+  //       <Form.Group className="mb-3" controlId="memory">
+  //         <Form.Label>Memory</Form.Label>
+  //         <InputGroup>
+  //           <Form.Control
+  //             type="number"
+  //             id="memory"
+  //             value={memory}
+  //             onChange={(event) =>
+  //               setMemory(Number.parseInt(event.currentTarget.value))
+  //             }
+  //           />
+  //           <InputGroup.Text>MB</InputGroup.Text>
+  //         </InputGroup>
+  //       </Form.Group>
+  //       <Form.Group className="mb-3" controlId="storage">
+  //         <Form.Label>Storage</Form.Label>
+  //         <InputGroup>
+  //           <Form.Control
+  //             type="number"
+  //             id="storage"
+  //             value={storage}
+  //             onChange={(event) =>
+  //               setStorage(Number.parseInt(event.currentTarget.value))
+  //             }
+  //           />
+  //           <InputGroup.Text>GB</InputGroup.Text>
+  //         </InputGroup>
+  //       </Form.Group>
+  //       <Button onClick={onSubmit}>Allocate Resource</Button>
+  //     </Form>
+  //   </Modal>
+  // );
 };

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Instance } from 'src/instance/instance.entity';
 import { InstanceRepository } from 'src/instance/instance.repository';
+import { PaginatedResponse } from 'src/interfaces/PaginatedResponse';
 
 @Injectable()
 export class InstanceService {
@@ -13,10 +14,22 @@ export class InstanceService {
   /**
    * Get all instances
    *
-   * @returns {Promise<Instance[]>}
+   * @returns {Promise<PaginatedResponse<Instance>>}
    */
-  async getAllInstances(): Promise<Instance[]> {
-    return await this.instanceRepository.find({ relations: ['user'] });
+  async getAllInstances(
+    skip?: number,
+    count: number = 20,
+  ): Promise<PaginatedResponse<Instance>> {
+    const [results, selected] = await this.instanceRepository.findAndCount({
+      relations: ['user', 'agent', 'image', 'version', 'image.game'],
+      skip,
+      take: count,
+    });
+
+    return {
+      results,
+      count: selected,
+    };
   }
 
   /**

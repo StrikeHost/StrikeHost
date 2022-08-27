@@ -1,1 +1,1 @@
-export const PRODUCT_NAME = "Game Server Thing";
+export const PRODUCT_NAME = "Strike Host";

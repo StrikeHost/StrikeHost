@@ -1,7 +1,9 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { AdminGuard } from 'src/auth/guards/admin.guard';
 import { SettingService } from 'src/setting/setting.service';
 
 @Controller('admin/settings')
+@UseGuards(AdminGuard)
 export class SettingsController {
   constructor(private settingsService: SettingService) {}
 

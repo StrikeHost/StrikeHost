@@ -5,6 +5,6 @@ export interface UserBillingPanelProps {
   user: User;
 }
 
-export const UserBillingPanel = ({ user }: UserBillingPanelProps) => {
+export const UserBillingPanel = () => {
   return <Panel span={3} title="Billing"></Panel>;
 };

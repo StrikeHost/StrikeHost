@@ -5,7 +5,7 @@ import { TableMk2 } from "components/TableMk2";
 import { Event } from "interfaces/Event";
 
 export const ActionsTablePanel = () => {
-  const renderRow = (event: Event, Cell: (props: any) => JSX.Element) => {
+  const renderRow = (event: Event, Cell: (props: unknown) => JSX.Element) => {
     return (
       <>
         <Cell></Cell>

@@ -30,31 +30,12 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { AdminModule } from './admin/admin.module';
 import { BullModule } from '@nestjs/bull';
 import { EmailModule } from './email/email.module';
+import { WebsocketModule } from './websocket/websocket.module';
+import { typeOrmAsyncConfig } from './config/typeorm.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: process.env.DB_HOST,
-      port: Number.parseInt(process.env.DB_PORT),
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE,
-      entities: [
-        Agent,
-        AgentSecret,
-        Event,
-        Game,
-        Image,
-        ImageVersion,
-        Instance,
-        ResourceAllocation,
-        Setting,
-        User,
-      ],
-      synchronize: true,
-    }),
     BullModule.forRoot({
       redis: {
         host: process.env.REDIS_HOST,
@@ -62,6 +43,7 @@ import { EmailModule } from './email/email.module';
         port: Number.parseInt(process.env.REDIS_PORT),
       },
     }),
+    TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
     UserModule,
     AuthModule,
     InstanceModule,
@@ -75,6 +57,7 @@ import { EmailModule } from './email/email.module';
     EventModule,
     AdminModule,
     EmailModule,
+    WebsocketModule,
   ],
   controllers: [AdminController],
   providers: [

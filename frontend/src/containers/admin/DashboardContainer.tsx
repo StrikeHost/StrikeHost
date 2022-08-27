@@ -1,14 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 
 import { api } from "utils/api";
-import { DashboardItemPreview } from "../../components/admin/DashboardItemPreview";
-import { PageTitle } from "components/PageTitle";
-import { GridActionBox } from "components/dashboard/GridActionBox";
-import { GridGraphBox } from "components/dashboard/GridGraphBox";
-import { ActionsTablePanel } from "components/dashboard/ActionsTablePanel";
 import { BreadcrumbTrail } from "components/Breadcrumbs";
+import { GridGraphBox } from "components/dashboard/GridGraphBox";
+import { GridActionBox } from "components/dashboard/GridActionBox";
+import { ActionsTablePanel } from "components/dashboard/ActionsTablePanel";
 
 export const AdminBreadcrumbs: BreadcrumbTrail[] = [
   {
@@ -35,16 +34,44 @@ export const DashboardContainer = () => {
   return (
     <Container className="pt-4">
       <StyledGrid>
-        <GridActionBox value={100} subText="Test" history={[100, 120]} />
-        <GridActionBox value={100} subText="Test" history={[100, 120]} />
-        <GridActionBox value={100} subText="Test" history={[100, 120]} />
-        <GridActionBox value={100} subText="Test" history={[100, 120]} />
-        <GridGraphBox span={2} history={[100, 120]} title="Test" />
-        <GridGraphBox span={2} history={[100, 120]} title="Test" />
-        <GridActionBox actionText="Create" value="Agent" />
-        <GridActionBox actionText="Create" value="User" />
-        <GridActionBox actionText="Update all" value="Agents" />
-        <GridActionBox actionText="Register" value="Game" />
+        <GridActionBox
+          value={instanceCount}
+          subText="Instances"
+          history={[100, 120]}
+          href="/admin/instance"
+        />
+        <GridActionBox
+          value={userCount}
+          subText="Users"
+          history={[100, 120]}
+          href="/admin/user"
+        />
+        <GridActionBox
+          value={agentCount}
+          subText="Agents"
+          history={[100, 120]}
+          href="/admin/agent"
+        />
+        <GridActionBox
+          value={imageCount}
+          subText="Images"
+          history={[100, 120]}
+          href="/admin/game"
+        />
+        <GridGraphBox span={2} history={[100, 120]} title="CPU Usage" />
+        <GridGraphBox span={2} history={[100, 120]} title="Memory Usage" />
+        <GridActionBox actionText="Create" value="Agent" href="/admin/agent" />
+        <GridActionBox actionText="Create" value="User" href="/admin/user" />
+        <GridActionBox
+          actionText="Update all"
+          value="Agents"
+          href="/admin/agent"
+        />
+        <GridActionBox
+          actionText="Register"
+          value="Game"
+          href="/admin/game/new"
+        />
         <ActionsTablePanel />
       </StyledGrid>
     </Container>

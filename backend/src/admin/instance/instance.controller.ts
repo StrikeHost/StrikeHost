@@ -8,17 +8,21 @@ export class InstanceController {
   constructor(private instanceService: InstanceService) {}
 
   @Get()
-  async GetInstances() {
-    return await this.instanceService.getAllInstances();
+  async GetInstances(@Param('skip') skip: number) {
+    return await this.instanceService.getAllInstances(skip);
   }
 
   @Get('/:instanceId')
   async GetInstance(@Param('instanceId') instanceId: string) {
     return await this.instanceService.getInstance(instanceId, [
       'user',
-      'game',
-      'game.image',
-      'game.image.version',
+      // 'game',
+      // 'game.image',
+      // 'game.image.version',
+      'image',
+      'version',
+      'image.game',
+      'agent',
     ]);
   }
 }

@@ -1,7 +1,5 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AdminGuard } from 'src/auth/guards/admin.guard';
-import { BypassAuth } from 'src/auth/guards/bypass-auth.decorator';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ResourceAllocationService } from 'src/resource-allocation/resource-allocation.service';
 import { CreateResourceAllocationDTO } from './dto/create-resource-allocation.dto';
 import { UserService } from './user.service';
@@ -24,17 +22,20 @@ export class UserController {
     return await this.userService.getUser(userId, [
       'instances',
       'instances.image',
+      'resource_allocations',
+      'resource_allocations.instance',
     ]);
   }
 
   @Get('/:userId/resource')
-  async GetUserResourceAllocations(@Param('userId') userId: string) {
-    const resources = await this.resourceAllocationService.getUserAllocations(
+  async GetUserResourceAllocations(
+    @Param('skip') skip: number,
+    @Param('userId') userId: string,
+  ) {
+    return await this.resourceAllocationService.getAllUserAllocations(
       userId,
-      ['instance'],
+      skip,
     );
-
-    return resources;
   }
 
   @Post('/:userId/resource')
@@ -49,5 +50,10 @@ export class UserController {
       );
 
     return allocation;
+  }
+
+  @Post('/:userId/delete')
+  async DeleteUser(@Param('userId') userId: string) {
+    return await this.userService.deleteUser(userId);
   }
 }
