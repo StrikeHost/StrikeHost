@@ -7,13 +7,13 @@ import {
 import { BaseCommand } from "./BaseCommand";
 import { InstanceService } from "../services/InstanceService";
 
-export default class StartInstance implements BaseCommand {
+export default class StopInstance implements BaseCommand {
   public register():
     | SlashCommandBuilder
     | Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup"> {
     return new SlashCommandBuilder()
-      .setName("start")
-      .setDescription("Start a new instance")
+      .setName("stop")
+      .setDescription("Stop a new instance")
       .addStringOption((option) =>
         option
           .setName("id")
@@ -27,15 +27,13 @@ export default class StartInstance implements BaseCommand {
   ): Promise<void> {
     const instanceId = interaction.options.getString("id");
 
-    await interaction.reply("Starting instance...");
-
     if (!instanceId) {
       await interaction.reply("No instance ID provided");
       return;
     }
 
-    await InstanceService.startInstance(instanceId);
+    await InstanceService.stopInstance(instanceId);
 
-    await interaction.reply("Starting instance...");
+    await interaction.reply("Stopping instance...");
   }
 }

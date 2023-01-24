@@ -54,6 +54,7 @@ export class UserService {
   public async getUserByDiscordId(discordId: string): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { discord_id: discordId },
+      relations: ['instances'],
     });
 
     if (!user) {
