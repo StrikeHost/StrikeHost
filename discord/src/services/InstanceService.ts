@@ -35,4 +35,16 @@ export class InstanceService {
   public static async stopInstance(instanceId: string): Promise<void> {
     await api.post(`/discord/instance/${instanceId}/stop`);
   }
+
+  /**
+   * Gets the status of an instance
+   *
+   * @param {string} instanceId
+   * @returns {Promise<Instance>}
+   */
+  public static async getInstanceStatus(instanceId: string): Promise<Instance> {
+    const response = await api.get<Instance>(`/discord/instance/${instanceId}`);
+
+    return response.data;
+  }
 }

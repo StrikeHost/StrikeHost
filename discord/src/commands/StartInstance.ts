@@ -36,6 +36,6 @@ export default class StartInstance implements BaseCommand {
 
     await InstanceService.startInstance(instanceId);
 
-    await interaction.reply("Starting instance...");
+    await interaction.followUp("Instance started!");
   }
 }
