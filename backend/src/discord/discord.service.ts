@@ -60,4 +60,9 @@ export class DiscordService {
   async startInstance(instance_id: string) {
     await this.instanceService.startInstance(instance_id);
   }
+
+  // Stop instance
+  async stopInstance(instance_id: string) {
+    await this.instanceService.stopInstance(instance_id);
+  }
 }

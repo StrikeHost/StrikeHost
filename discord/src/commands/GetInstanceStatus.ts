@@ -47,7 +47,7 @@ export default class GetInstanceStatus implements BaseCommand {
     interaction.editReply({ embeds: [embed] });
   }
 
-  private getEmbed(instance: Instance) {
+  private getEmbed(instance: Instance): EmbedBuilder {
     const embed = new EmbedBuilder()
       .setColor("#e1aa17")
       .setTitle(`${instance.image.game.name} Server`)

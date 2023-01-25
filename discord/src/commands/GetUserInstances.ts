@@ -1,5 +1,17 @@
-import { SlashCommandBuilder, CommandInteraction, CacheType } from "discord.js";
+import dayjs from "dayjs";
+import {
+  SlashCommandBuilder,
+  CacheType,
+  EmbedBuilder,
+  ChatInputCommandInteraction,
+  APIEmbedField,
+  RestOrArray,
+  ActionRowBuilder,
+  ButtonBuilder,
+} from "discord.js";
+import { Instance } from "../interfaces/Instance";
 import { InstanceService } from "../services/InstanceService";
+import { getInstanceEmbed } from "../utils/instances";
 
 import { BaseCommand } from "./BaseCommand";
 
@@ -13,13 +25,32 @@ export default class GetUserInstances implements BaseCommand {
   }
 
   public async handle(
-    interaction: CommandInteraction<CacheType>
+    interaction: ChatInputCommandInteraction<CacheType>
   ): Promise<void> {
     const instances = await InstanceService.getInstances(interaction.user.id);
 
+    if (instances.length === 0) {
+      await interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setTitle("No instances found")
+            .setDescription("This user has no instances"),
+        ],
+        components: [],
+        ephemeral: true,
+      });
+      return;
+    }
+
+    const [embed, actionRow] = getInstanceEmbed(instances[0]);
+
     await interaction.reply({
-      content: JSON.stringify(instances),
+      embeds: [embed],
+      // @ts-ignore
+      components: [actionRow],
       ephemeral: true,
     });
+
+    // TODO: Add pagination using reactions
   }
 }

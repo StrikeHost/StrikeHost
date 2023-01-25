@@ -47,6 +47,7 @@ export interface Image {
   id: string;
   docker_name: string;
   game: Game;
+  name: string;
 }
 
 export interface Agent {

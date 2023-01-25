@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { InstanceModule } from 'src/instance/instance.module';
 import { UserModule } from 'src/user/user.module';
+import { InstanceModule } from 'src/instance/instance.module';
 import { DiscordController } from './discord.controller';
 import { DiscordService } from './discord.service';
 
