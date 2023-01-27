@@ -6,6 +6,7 @@ import {
 
 import { BaseCommand } from "./BaseCommand";
 import { InstanceService } from "../services/InstanceService";
+import { InstanceStatusType } from "../interfaces/Instance";
 
 export default class StartInstance implements BaseCommand {
   public register():
@@ -25,17 +26,44 @@ export default class StartInstance implements BaseCommand {
   public async handle(
     interaction: ChatInputCommandInteraction<CacheType>
   ): Promise<void> {
+    await interaction.deferReply({ ephemeral: true });
     const instanceId = interaction.options.getString("id");
 
-    await interaction.reply("Starting instance...");
-
     if (!instanceId) {
-      await interaction.reply("No instance ID provided");
+      await interaction.editReply({
+        content: "Please provide your instance ID",
+      });
       return;
     }
 
-    await InstanceService.startInstance(instanceId);
-
-    await interaction.followUp("Instance started!");
+    InstanceService.getInstanceStatus(instanceId)
+      .then((instance) => {
+        if (
+          instance.status === InstanceStatusType.RUNNING ||
+          instance.status === InstanceStatusType.STARTING
+        ) {
+          interaction.editReply({
+            content: "Instance is already running!",
+          });
+        } else {
+          InstanceService.startInstance(instanceId)
+            .then(() => {
+              interaction.editReply({
+                content: "Instance started!",
+              });
+            })
+            .catch(() => {
+              interaction.editReply({
+                content:
+                  "Cannot start instance right now, please try again later",
+              });
+            });
+        }
+      })
+      .catch(() => {
+        interaction.editReply({
+          content: "Cannot find instance with that ID",
+        });
+      });
   }
 }

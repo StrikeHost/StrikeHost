@@ -14,12 +14,28 @@ export default class UnlinkUser implements BaseCommand {
   public async handle(
     interaction: CommandInteraction<CacheType>
   ): Promise<void> {
-    await UserService.unlinkUserAccount(interaction.user.id);
+    await interaction.deferReply({ ephemeral: true });
 
-    await interaction.reply({
-      content:
-        "Your Discord account has been unlinked from your Strike account",
-      ephemeral: true,
-    });
+    UserService.getUserAccount(interaction.user.id)
+      .then(() => {
+        UserService.unlinkUserAccount(interaction.user.id)
+          .then(() => {
+            interaction.editReply({
+              content:
+                "Your Discord account has been unlinked from your Strike account",
+            });
+          })
+          .catch(() => {
+            interaction.editReply({
+              content:
+                "Cannot unlink your account right now, please try again later",
+            });
+          });
+      })
+      .catch(() => {
+        interaction.editReply({
+          content: "You don't have a linked account!",
+        });
+      });
   }
 }

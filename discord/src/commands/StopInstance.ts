@@ -6,6 +6,7 @@ import {
 
 import { BaseCommand } from "./BaseCommand";
 import { InstanceService } from "../services/InstanceService";
+import { InstanceStatusType } from "../interfaces/Instance";
 
 export default class StopInstance implements BaseCommand {
   public register():
@@ -25,15 +26,43 @@ export default class StopInstance implements BaseCommand {
   public async handle(
     interaction: ChatInputCommandInteraction<CacheType>
   ): Promise<void> {
+    await interaction.deferReply({ ephemeral: true });
+
+    // get instance ID from options, get status and then try to stop it
     const instanceId = interaction.options.getString("id");
 
     if (!instanceId) {
-      await interaction.reply("No instance ID provided");
+      await interaction.editReply({
+        content: "Please provide your instance ID",
+      });
       return;
     }
 
-    await InstanceService.stopInstance(instanceId);
-
-    await interaction.reply("Stopping instance...");
+    InstanceService.getInstanceStatus(instanceId)
+      .then((instance) => {
+        if (instance.status !== InstanceStatusType.RUNNING) {
+          interaction.editReply({
+            content: "Instance is not running!",
+          });
+        } else {
+          InstanceService.stopInstance(instanceId)
+            .then(() => {
+              interaction.editReply({
+                content: "Instance stopped!",
+              });
+            })
+            .catch(() => {
+              interaction.editReply({
+                content:
+                  "Cannot stop instance right now, please try again later",
+              });
+            });
+        }
+      })
+      .catch(() => {
+        interaction.editReply({
+          content: "Cannot find instance with this ID",
+        });
+      });
   }
 }
