@@ -19,6 +19,7 @@ declare global {
     interface ProcessEnv {
       BOT_TOKEN: string;
       CLIENT_ID: string;
+      REQUIRES_DISCORD_FLAG: boolean;
     }
   }
 }
