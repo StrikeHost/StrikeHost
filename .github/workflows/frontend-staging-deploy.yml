@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: "18"
       - name: Install dependencies
-        run: npm i -g yarn && yarn install
+        run: cd frontend && npm i -g yarn && yarn install
       - name: Build
         run: yarn build
       - name: Configure AWS credentials
