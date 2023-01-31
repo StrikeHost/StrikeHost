@@ -2,7 +2,7 @@ import { Form } from "react-bootstrap";
 
 import { Game, Image } from "interfaces/Game";
 import { Button } from "components/Button";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import slugify from "slugify";
 import { InheritableGameComponentsForm } from "./game/InheritableGameComponentsForm";
 import { Separator } from "components/text/Separator";
