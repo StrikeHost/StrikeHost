@@ -30,6 +30,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { AdminModule } from './admin/admin.module';
 import { WebsocketModule } from './websocket/websocket.module';
 import { typeOrmAsyncConfig } from './config/typeorm.config';
+import { DiscordModule } from './discord/discord.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { typeOrmAsyncConfig } from './config/typeorm.config';
     EventModule,
     AdminModule,
     WebsocketModule,
+    DiscordModule,
   ],
   controllers: [AdminController],
   providers: [

@@ -51,6 +51,25 @@ export class UserService {
     return user;
   }
 
+  public async getUserByDiscordId(discordId: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { discord_id: discordId },
+      relations: [
+        'instances',
+        'instances.image',
+        'instances.version',
+        'instances.image.game',
+        'instances.agent',
+      ],
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found!');
+    }
+
+    return user;
+  }
+
   public async editUser(
     userId: string,
     registerUserDto: RegisterUserDTO,

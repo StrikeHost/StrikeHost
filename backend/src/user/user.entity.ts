@@ -29,6 +29,9 @@ export class User extends BaseEntity {
   @Column()
   last_name: string;
 
+  @Column({ nullable: true })
+  discord_id?: string;
+
   @Column({ default: false })
   admin: boolean;
 

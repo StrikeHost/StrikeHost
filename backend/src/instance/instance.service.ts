@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   InternalServerErrorException,
@@ -21,6 +22,7 @@ import { InstanceStateChangeDto } from './dto/instance-state-change.dto';
 import { Instance } from './instance.entity';
 import { Image } from 'src/image/image.entity';
 import { InstanceRepository } from './instance.repository';
+import { InstanceStatusType } from './enum/InstanceStatusType';
 
 @Injectable()
 export class InstanceService {
@@ -80,6 +82,37 @@ export class InstanceService {
   }
 
   /**
+   *
+   * @param id
+   * @returns
+   */
+  public async getDetailedInstanceStatus(id: string): Promise<Instance> {
+    const instance = await this.getInstance(id, [
+      'agent',
+      'user',
+      'image',
+      'version',
+      'image.game',
+    ]);
+
+    const maxPlayers = Math.floor(Math.random() * 24) + 1;
+    // Generate a random list of player names
+    const playerNames = Array.from({ length: maxPlayers }, () =>
+      Math.random().toString(36).substring(2, 15),
+    );
+
+    // TODO: add detailed status information to the instance
+    instance.detailed_status = {
+      max_players: maxPlayers,
+      player_list: playerNames,
+      status: instance.status as InstanceStatusType,
+      player_count: Math.floor(Math.random() * maxPlayers),
+    };
+
+    return instance;
+  }
+
+  /**
    * Creates a new instance and triggers the provisioning process
    *
    * @param createInstanceDto
@@ -100,7 +133,7 @@ export class InstanceService {
       await this.resourceAllocationService.getFreeUserAllocations(user.id);
 
     if (allocations.length === 0) {
-      throw new NotFoundException('No available allocations!');
+      throw new BadRequestException('No available allocations!');
     }
 
     const game = await this.gameRepository.findOne(createInstanceDto.game_id);

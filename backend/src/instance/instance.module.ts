@@ -25,5 +25,6 @@ import { GameRepository } from 'src/game/game.repository';
   ],
   providers: [InstanceService, InstanceGateway],
   controllers: [InstanceController],
+  exports: [InstanceService],
 })
 export class InstanceModule {}
