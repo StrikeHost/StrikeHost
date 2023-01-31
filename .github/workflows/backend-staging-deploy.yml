@@ -24,7 +24,7 @@ jobs:
           host: ${{ secrets.STAGING_BACKEND_HOSTNAME }}
           username: ${{ secrets.STAGING_BACKEND_USERNAME }}
           key: ${{ secrets.STAGING_BACKEND_SSH_KEY }}
-          source: "backend/dist"
+          source: "backend/"
           target: "/home/ec2-user/strike-staging"
           port: 22
           overwrite: true
