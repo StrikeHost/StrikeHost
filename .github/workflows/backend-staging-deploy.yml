@@ -19,7 +19,7 @@ jobs:
       - name: Build
         env:
           STAGING_BACKEND_ENV: ${{ secrets.STAGING_BACKEND_ENV }}
-        run: cd backend && yarn build && cat "$STAGING_BACKEND_ENV" > .env
+        run: cd backend && yarn build && echo "$STAGING_BACKEND_ENV" > .env
       - name: Copy built files
         uses: appleboy/scp-action@master
         with:
