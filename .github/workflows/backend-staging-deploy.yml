@@ -37,5 +37,6 @@ jobs:
           echo "$STAGING_BACKEND_SSH_KEY" > private_key && chmod 400 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${STAGING_BACKEND_USERNAME}@${STAGING_BACKEND_HOSTNAME} '
             cd /home/ec2-user/strike-staging/backend &&
-            pm2 restart Backend
+            pm2 kill &&
+            pm2 start dist/index.js --name strike-staging-backend
           '
