@@ -27,7 +27,7 @@ jobs:
           username: ${{ secrets.STAGING_BACKEND_USERNAME }}
           key: ${{ secrets.STAGING_BACKEND_SSH_KEY }}
           source: "backend/"
-          target: "/home/ec2-user/strike-staging"
+          target: "/home/ubuntu/strike-staging"
           port: 22
           overwrite: true
       - name: Restart server
@@ -38,7 +38,7 @@ jobs:
         run: |
           echo "$STAGING_BACKEND_SSH_KEY" > private_key && chmod 400 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${STAGING_BACKEND_USERNAME}@${STAGING_BACKEND_HOSTNAME} '
-            cd /home/ec2-user/strike-staging/backend &&
+            cd /home/ubuntu/strike-staging/backend &&
             pm2 kill &&
             pm2 start dist/main.js --name strike-staging-backend
           '
