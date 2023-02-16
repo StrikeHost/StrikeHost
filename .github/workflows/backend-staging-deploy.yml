@@ -37,8 +37,9 @@ jobs:
           STAGING_BACKEND_SSH_KEY: ${{ secrets.STAGING_BACKEND_SSH_KEY }}
         run: |
           echo "$STAGING_BACKEND_SSH_KEY" > private_key && chmod 400 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${STAGING_BACKEND_USERNAME}@${STAGING_BACKEND_HOSTNAME} '
+          ssh -o StrictHostKeyChecking=no -i sam-mac.pem ubuntu@18.134.14.116 '
+            export PATH=$PATH:/home/ubuntu/.nvm/versions/node/v16.19.1/bin &&
             cd /home/ubuntu/strike-staging/backend &&
-            /home/ubuntu/.nvm/versions/node/v16.19.1/bin/pm2 kill &&
-            /home/ubuntu/.nvm/versions/node/v16.19.1/bin/pm2 start dist/main.js --name strike-staging-backend
+            pm2 kill &&
+            pm2 start dist/main.js --name strike-staging-backend
           '
