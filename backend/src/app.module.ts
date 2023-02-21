@@ -31,6 +31,7 @@ import { AdminModule } from './admin/admin.module';
 import { WebsocketModule } from './websocket/websocket.module';
 import { typeOrmAsyncConfig } from './config/typeorm.config';
 import { DiscordModule } from './discord/discord.module';
+import { AppController } from './app/app.controller';
 
 @Module({
   imports: [
@@ -51,7 +52,7 @@ import { DiscordModule } from './discord/discord.module';
     WebsocketModule,
     DiscordModule,
   ],
-  controllers: [AdminController],
+  controllers: [AdminController, AppController],
   providers: [
     {
       provide: APP_GUARD,
