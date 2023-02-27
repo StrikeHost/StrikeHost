@@ -1,7 +1,7 @@
 import { Database as DatabaseConn } from "sqlite3";
 import { promisify } from "util";
 
-import { Instance } from "../interfaces/Instance";
+import { Instance, SerializedInstance } from "../interfaces/Instance";
 
 /**
  * Utility class for database functions
@@ -27,19 +27,19 @@ export class Database {
    *
    * @param {Instance} server
    */
-  public static createInstance(instance: Instance) {
+  public static createInstance(instance: SerializedInstance) {
     Database.conn.run(
       "INSERT INTO instances (id, data) VALUES (?, ?)",
-      instance.id,
+      instance.instance.id,
       JSON.stringify(instance)
     );
   }
 
-  public static updateInstance(instance: Instance) {
+  public static updateInstance(instance: SerializedInstance) {
     Database.conn.run(
       "UPDATE instances SET data = ? WHERE id = ?",
       JSON.stringify(instance),
-      instance.id
+      instance.instance.id
     );
   }
 
@@ -56,9 +56,11 @@ export class Database {
    * Retrieve details for specified server
    *
    * @param {string} instanceId
-   * @returns {Promise<Instance>}
+   * @returns {Promise<SerializedInstance>}
    */
-  public static async getInstance(instanceId: string): Promise<Instance> {
+  public static async getInstance(
+    instanceId: string
+  ): Promise<SerializedInstance> {
     const results = await Database.all("SELECT * FROM instances WHERE id = ?", [
       instanceId,
     ]);
@@ -69,9 +71,9 @@ export class Database {
   /**
    * Gets an array of all registered servers
    *
-   * @returns {Promise<Instance[]>}
+   * @returns {Promise<SerializedInstance[]>}
    */
-  public static async getAllInstances(): Promise<Instance[]> {
+  public static async getAllInstances(): Promise<SerializedInstance[]> {
     const results = await Database.all("SELECT * FROM instances", []);
     return results.map((row: any) => {
       return JSON.parse(row["data"]);
@@ -87,7 +89,7 @@ export class Database {
   public static async instanceExists(instanceId: string): Promise<boolean> {
     const servers = await Database.getAllInstances();
 
-    return servers.some((server) => server.id === instanceId);
+    return servers.some((server) => server.instance.id === instanceId);
   }
 
   /**

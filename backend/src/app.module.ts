@@ -24,31 +24,19 @@ import { AgentSecretModule } from './agent-secret/agent-secret.module';
 import { ImageVersionModule } from './image-version/image-version.module';
 import { ResourceAllocation } from './resource-allocation/resource-allocation.entity';
 import { ResourceAllocationModule } from './resource-allocation/resource-allocation.module';
+import { AdminController } from './admin/admin.controller';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { AdminModule } from './admin/admin.module';
+import { WebsocketModule } from './websocket/websocket.module';
+import { typeOrmAsyncConfig } from './config/typeorm.config';
+import { DiscordModule } from './discord/discord.module';
+import { AppController } from './app/app.controller';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: process.env.DB_HOST,
-      port: Number.parseInt(process.env.DB_PORT),
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE,
-      entities: [
-        Agent,
-        AgentSecret,
-        Event,
-        Game,
-        Image,
-        ImageVersion,
-        Instance,
-        ResourceAllocation,
-        Setting,
-        User,
-      ],
-      synchronize: true,
-    }),
+    TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
     UserModule,
     AuthModule,
     InstanceModule,
@@ -60,9 +48,17 @@ import { ResourceAllocationModule } from './resource-allocation/resource-allocat
     AgentModule,
     AgentSecretModule,
     EventModule,
+    AdminModule,
+    WebsocketModule,
+    DiscordModule,
   ],
-  controllers: [],
-  providers: [],
+  controllers: [AdminController, AppController],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {
   constructor(private connection: Connection) {}

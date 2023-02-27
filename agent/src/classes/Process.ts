@@ -59,14 +59,20 @@ export class Process {
 
   /**
    * Create docker instance. Returns container id
+   * @param cpus The number of CPUs cores to be available
+   * @param memory The amount of memory to be available, in GB
+   * @param storage The amount of storage to be available, in GB
    */
-  public provision(): string {
+  public provision(cpus: number, memory: number, storage: number): string {
     const dockerArgs = [
       "docker",
       "create",
-      `-p=${this.port}:${this.port}`,
+      `-p=${this.port}:25565`, // TODO: replace with game's original port
       `--expose=${this.port}`,
       `--name=${this.instance.id}`,
+      `--cpus=${cpus}`,
+      `--memory=${memory}g`,
+      ...this.getStorageArguments(storage),
       ...this.getCustomArguments(),
       `${this.dockerImage}`,
     ];
@@ -146,6 +152,15 @@ export class Process {
 
   private getDockerStopCommand(): string[] {
     return ["stop"];
+  }
+
+  private getStorageArguments(storage: number): string[] {
+    if (process.env.NODE_ENV === "development") {
+      console.debug("Creating instance without storage quotas");
+      return [];
+    }
+
+    return [`--storage-opt size=${storage}G`];
   }
 
   private getCustomArguments(): string[] {

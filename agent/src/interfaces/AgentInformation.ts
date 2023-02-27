@@ -1,5 +1,5 @@
 export interface AgentInformation {
   storage: number;
-  cpu_cores: number;
+  cores: number;
   total_memory: number;
 }

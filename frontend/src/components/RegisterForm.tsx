@@ -1,26 +1,20 @@
+import { useState } from "react";
 import toast from "react-hot-toast";
 import styled from "styled-components";
 import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
-import { useContext, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 
 import { api } from "utils/api";
-import { SocketContext } from "App";
-import { User } from "interfaces/User";
 import { refetchUser } from "utils/user";
 
 interface RegisterResponse {
-  data: {
-    user: User;
-    token: string;
-  };
+  access_token: string;
 }
 
 export const RegisterForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { openConnection } = useContext(SocketContext);
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -67,10 +61,9 @@ export const RegisterForm = () => {
     api
       .post<RegisterResponse>("/auth/register", request)
       .then(async (response) => {
-        localStorage.setItem("token", response.data.data.token);
+        localStorage.setItem("token", response.data.access_token);
         await refetchUser(dispatch);
         history.push("/");
-        openConnection(response.data.data.user.id, response.data.data.token);
       })
       .catch(() => {
         // do something

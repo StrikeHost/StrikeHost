@@ -1,24 +1,28 @@
 import { Form } from "react-bootstrap";
 
-import { Image } from "interfaces/Game";
+import { Game, Image } from "interfaces/Game";
 import { Button } from "components/Button";
 import React, { useState } from "react";
 import slugify from "slugify";
+import { InheritableGameComponentsForm } from "./game/InheritableGameComponentsForm";
+import { Separator } from "components/text/Separator";
 
 export interface ModifyImageFormProps {
+  game: Game;
   image?: Image;
   onSubmit?: (image: Partial<Image>) => void;
 }
 
-export const ModifyImageForm = ({ image, onSubmit }: ModifyImageFormProps) => {
+export const ModifyImageForm = ({
+  game,
+  image,
+  onSubmit,
+}: ModifyImageFormProps) => {
   const [name, setImageName] = useState<string>(image?.name || "");
   const [slug, setImageSlug] = useState<string>(image?.slug || "");
-  const [min_memory, setImageMemory] = useState<number>(
-    image?.min_memory || 1024
-  );
-  const [docker_name, setImageDockerName] = useState<string>(
-    image?.docker_name || ""
-  );
+  const [inheritableComponents, setInheritableComponents] = useState<
+    Partial<Image>
+  >(image || {});
 
   /**
    * Invoked on image name change event
@@ -36,19 +40,25 @@ export const ModifyImageForm = ({ image, onSubmit }: ModifyImageFormProps) => {
   /**
    * Invoked on form submit
    */
-  const handleSubmit = () => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     const img: Partial<Image> = {
+      ...inheritableComponents,
       name,
       slug,
-      docker_name,
-      min_memory,
     };
 
     if (onSubmit) onSubmit(img);
   };
 
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
+      <Form.Group>
+        <Form.Label>Game Name</Form.Label>
+        <Form.Control disabled type="text" value={game.name} />
+      </Form.Group>
+      <Separator>Image Properties</Separator>
       <Form.Group className="mb-2">
         <Form.Label>Image Name</Form.Label>
         <Form.Control
@@ -59,34 +69,14 @@ export const ModifyImageForm = ({ image, onSubmit }: ModifyImageFormProps) => {
           onChange={handleImageNameChange}
         />
       </Form.Group>
-      <Form.Group className="mb-2">
-        <Form.Label>Docker Image Name</Form.Label>
-        <Form.Control
-          type="text"
-          required={true}
-          value={docker_name}
-          defaultValue={image?.docker_name}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setImageDockerName(event.currentTarget.value)
-          }
-        />
-      </Form.Group>
-      <Form.Group className="mb-4">
-        <Form.Label>Minimum Memory (MB)</Form.Label>
-        <Form.Control
-          min={512}
-          type="number"
-          required={true}
-          value={min_memory}
-          defaultValue={image?.min_memory || 1024}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setImageMemory(Number.parseInt(event.currentTarget.value))
-          }
-        />
-      </Form.Group>
-      <Button variant="primary" onClick={handleSubmit}>
-        Submit
-      </Button>
+      <Separator>Inheritable Properties</Separator>
+      <InheritableGameComponentsForm
+        defaultValues={game}
+        components={inheritableComponents}
+        onChange={setInheritableComponents}
+        requiredFields={["docker_name", "min_memory"]}
+      />
+      <Button variant="primary">Submit</Button>
     </Form>
   );
 };

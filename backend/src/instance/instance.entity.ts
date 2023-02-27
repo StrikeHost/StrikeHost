@@ -13,6 +13,7 @@ import {
 } from 'typeorm';
 import { Agent } from 'src/agent/agent.entity';
 import { ResourceAllocation } from 'src/resource-allocation/resource-allocation.entity';
+import { DetailedStatus } from './DetailedStatus';
 
 @Entity()
 export class Instance extends BaseEntity {
@@ -24,6 +25,9 @@ export class Instance extends BaseEntity {
 
   @Column()
   status: string;
+
+  @Column()
+  cpus: number;
 
   @Column()
   memory: number;
@@ -59,4 +63,6 @@ export class Instance extends BaseEntity {
     nullable: false,
   })
   resource_allocation: ResourceAllocation;
+
+  detailed_status?: DetailedStatus;
 }

@@ -1,6 +1,9 @@
 import { Process } from "./Process";
 
-import { Instance as InstanceInterface } from "../interfaces/Instance";
+import {
+  InheritableInstance,
+  Instance as InstanceInterface,
+} from "../interfaces/Instance";
 import { Agent } from "./Agent";
 import {
   ClientEventName,
@@ -23,23 +26,40 @@ export class Instance {
   public readonly port: number = 0;
 
   private instance: InstanceInterface;
+  private inheritableInstance: InheritableInstance;
 
-  constructor(instance: InstanceInterface) {
+  constructor(
+    instance: InstanceInterface,
+    inheritableInstance: InheritableInstance
+  ) {
     this.id = instance.id;
     this.port = instance.port;
     this.instance = instance;
+    this.inheritableInstance = inheritableInstance;
+    console.log(this.inheritableInstance);
     this.process = new Process(
       this,
-      instance.image.docker_name,
+      inheritableInstance.docker_name,
       instance.id,
       instance.port,
-      instance.version.arguments
+      inheritableInstance.arguments
     );
   }
 
   public provision() {
-    this.process.provision();
+    this.process.provision(
+      this.instance.cpus,
+      this.instance.memory,
+      this.instance.storage
+    );
     this.changeState(InstanceStatusType.STOPPED);
+
+    const serialized = {
+      instance: this.instance,
+      inheritableInstance: this.inheritableInstance,
+    };
+
+    Database.createInstance(serialized);
   }
 
   public async start() {
@@ -82,6 +102,12 @@ export class Instance {
     Agent.sendEvent(event);
 
     this.instance.status = status;
-    Database.updateInstance(this.instance);
+
+    const serialized = {
+      instance: this.instance,
+      inheritableInstance: this.inheritableInstance,
+    };
+
+    Database.updateInstance(serialized);
   }
 }

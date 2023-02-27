@@ -23,23 +23,45 @@ export class Agent extends BaseEntity {
   @Column({ nullable: true })
   status: string;
 
-  @Column({ nullable: true })
+  @Column('int', { nullable: true })
   cores: number;
 
-  @Column({ nullable: true })
+  @Column('int', { nullable: true })
+  allocated_cores: number;
+
+  @Column('int', { nullable: true })
+  free_cores: number;
+
+  @Column('int', { nullable: true })
   memory: number;
 
-  @Column({ nullable: true })
+  @Column('int', { nullable: true })
   allocated_memory: number;
 
-  @Column({ nullable: true })
+  @Column('int', { nullable: true })
   free_memory: number;
 
-  @Column({ type: 'text', nullable: true })
-  port_numbers: string;
+  @Column('int', { nullable: true })
+  storage: number;
 
-  // @Column("int", { array: true })
-  // storage: number[];
+  @Column('int', { nullable: true })
+  free_storage: number;
+
+  @Column('int', { nullable: true })
+  allocated_storage: number;
+
+  @Column('text', {
+    nullable: true,
+    transformer: {
+      from(val: string) {
+        return JSON.parse(val) as number[];
+      },
+      to(val: object) {
+        return JSON.stringify(val);
+      },
+    },
+  })
+  port_numbers: number[];
 
   @CreateDateColumn()
   created_at: Date;
@@ -81,7 +103,7 @@ export class Agent extends BaseEntity {
    * @returns {number}
    */
   findAvailablePort(): number {
-    const ports = JSON.parse(this.port_numbers) as number[];
+    const ports = this.port_numbers;
     if (ports.length > 0) {
       return ports[0];
     }
@@ -95,9 +117,9 @@ export class Agent extends BaseEntity {
    * @param {number} port
    */
   freeUpPort(port: number) {
-    const ports = JSON.parse(this.port_numbers) as number[];
+    const ports = this.port_numbers;
     ports.push(port);
-    this.port_numbers = JSON.stringify(ports);
+    this.port_numbers = ports;
   }
 
   /**
@@ -106,12 +128,12 @@ export class Agent extends BaseEntity {
    * @param {number} port
    */
   claimPort(port: number) {
-    let ports = JSON.parse(this.port_numbers) as number[];
+    let ports = this.port_numbers;
     if (ports.some((portNum) => portNum === port)) {
       ports = ports.filter((value) => value !== port);
     }
 
-    this.port_numbers = JSON.stringify(ports);
+    this.port_numbers = ports;
   }
 
   /**

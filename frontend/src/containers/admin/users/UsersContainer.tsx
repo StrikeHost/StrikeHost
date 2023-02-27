@@ -3,6 +3,7 @@ import { PageTitle } from "components/PageTitle";
 import { TableMk2 } from "components/TableMk2";
 import { User } from "interfaces/User";
 import { Container } from "react-bootstrap";
+import { formatDateDiff } from "utils/misc";
 
 export const UsersContainer = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -11,12 +12,22 @@ export const UsersContainer = () => {
       <>
         <Cell>
           <Link to={`/admin/user/${user.id}`}>
-            {user.id.substring(0, 8)}...
+            {user.first_name} {user.last_name}
           </Link>
         </Cell>
-        <Cell>{user.first_name}</Cell>
-        <Cell>{user.last_name}</Cell>
-        <Cell>{user.email}</Cell>
+        <Cell>
+          <Link to={`/admin/user/${user.id}`}>{user.email}</Link>
+        </Cell>
+        <Cell>
+          <Link to={`/admin/user/${user.id}`}>
+            {user.instances.length > 0 && user.instances.length}
+          </Link>
+        </Cell>
+        <Cell>
+          <Link to={`/admin/user/${user.id}`}>
+            {formatDateDiff(user.created_at)}
+          </Link>
+        </Cell>
       </>
     );
   };
@@ -27,7 +38,7 @@ export const UsersContainer = () => {
       <TableMk2
         sourceUrl="/admin/user"
         cols={4}
-        columns={["ID", "First Name", "Last Name", "Email"]}
+        columns={["Name", "Email", "Instances", "Created"]}
         renderRow={renderRow}
       />
     </Container>

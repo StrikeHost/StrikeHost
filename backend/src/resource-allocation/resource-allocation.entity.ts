@@ -18,6 +18,9 @@ export class ResourceAllocation extends BaseEntity {
   id: string;
 
   @Column()
+  cpus: number;
+
+  @Column()
   memory: number;
 
   @Column()

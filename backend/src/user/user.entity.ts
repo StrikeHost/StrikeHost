@@ -20,7 +20,7 @@ export class User extends BaseEntity {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @Column()
@@ -28,6 +28,9 @@ export class User extends BaseEntity {
 
   @Column()
   last_name: string;
+
+  @Column({ nullable: true })
+  discord_id?: string;
 
   @Column({ default: false })
   admin: boolean;
@@ -57,5 +60,20 @@ export class User extends BaseEntity {
    */
   async comparePassword(password: string) {
     return await compare(password, this.password);
+  }
+
+  /**
+   * Compares the given password with the user's password.
+   *
+   * @param {string} password
+   * @param {string} password2
+   *
+   * @returns {boolean}
+   */
+  static async ComparePassword(
+    password: string,
+    password2: string,
+  ): Promise<boolean> {
+    return await compare(password, password2);
   }
 }

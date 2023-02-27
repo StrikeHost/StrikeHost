@@ -19,19 +19,29 @@ export class ImageVersion extends BaseEntity {
   @ManyToOne(() => Image, (image) => image.versions)
   image: Image;
 
-  /**
-   * JSON-formatted string
-   */
   @Column({
+    type: 'varchar',
     nullable: true,
     transformer: {
       from(val: string) {
-        return JSON.parse(val);
+        return JSON.parse(val) as Record<string, string>;
       },
       to(val: object) {
         return JSON.stringify(val);
       },
     },
   })
-  arguments: string;
+  arguments?: Record<string, string>;
+
+  @Column({ nullable: true })
+  docker_name?: string;
+
+  @Column({ nullable: true })
+  min_memory?: number;
+
+  @Column({ nullable: true })
+  min_storage?: number;
+
+  @Column({ nullable: true })
+  min_cpu?: number;
 }

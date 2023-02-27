@@ -13,6 +13,10 @@ import { Button } from "components/Button";
 import { Agent } from "interfaces/Instance";
 import { formatDate, formatTime } from "utils/misc";
 
+interface AddSecretResponse {
+  token: string;
+}
+
 export interface ManageAgentConfigContainerProps {
   agent: Agent;
   refetch: () => void;
@@ -82,10 +86,12 @@ export const ManageAgentConfigContainer = ({
   // Attempts to create a new secret that can be used for authenticating the
   // agent
   const handleAddAgentSecret = () => {
-    api.post<string>(`/admin/agent/${agent.id}/secret`).then((response) => {
-      setAgentSecret(response.data);
-      refetch();
-    });
+    api
+      .post<AddSecretResponse>(`/admin/agent/${agent.id}/secret`)
+      .then((response) => {
+        setAgentSecret(response.data.token);
+        refetch();
+      });
   };
 
   /**
@@ -168,22 +174,23 @@ export const ManageAgentConfigContainer = ({
               </tr>
             </thead>
             <tbody>
-              {agent.secrets.map((secret) => (
-                <tr>
-                  <td>{secret.id}</td>
-                  <td>{secret.disabled_at ? "Disabled" : "Active"}</td>
-                  <td>
-                    <Link to={`/admin/user/${secret.created_by.id}`}>
-                      {secret.created_by.first_name}{" "}
-                      {secret.created_by.last_name}
-                    </Link>
-                  </td>
-                  <td>
-                    {formatDate(secret.created_at)} at{" "}
-                    {formatTime(secret.created_at)}
-                  </td>
-                </tr>
-              ))}
+              {agent.secrets &&
+                agent.secrets.map((secret) => (
+                  <tr>
+                    <td>{secret.id}</td>
+                    <td>{secret.disabled_at ? "Disabled" : "Active"}</td>
+                    <td>
+                      <Link to={`/admin/user/${secret.created_by.id}`}>
+                        {secret.created_by.first_name}{" "}
+                        {secret.created_by.last_name}
+                      </Link>
+                    </td>
+                    <td>
+                      {formatDate(secret.created_at)} at{" "}
+                      {formatTime(secret.created_at)}
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </Table>
           <Button onClick={handleShowAddAgentSecret}>Add Secret</Button>
@@ -197,7 +204,7 @@ export const ManageAgentConfigContainer = ({
       </StyledContainer>
       <Modal
         isShown={isUpdateModalOpen}
-        title="Update agent"
+        // title="Update agent"
         onClose={() => setIsUpdateModalOpen(false)}
       >
         <p>
@@ -208,7 +215,7 @@ export const ManageAgentConfigContainer = ({
       </Modal>
       <Modal
         isShown={isRestartModalOpen}
-        title="Restart agent"
+        // title="Restart agent"
         onClose={() => setIsRestartModalOpen(false)}
       >
         <p>
@@ -219,7 +226,7 @@ export const ManageAgentConfigContainer = ({
       </Modal>
       <Modal
         isShown={isEraseModalOpen}
-        title="Erase local database and restart agent"
+        // title="Erase local database and restart agent"
         onClose={() => setIsEraseModalOpen(false)}
       >
         <p>
@@ -233,7 +240,7 @@ export const ManageAgentConfigContainer = ({
         </Button>
       </Modal>
       <Modal
-        title="Add Agent Secret"
+        // title="Add Agent Secret"
         onClose={() => setIsAddSecretModalOpen(false)}
         isShown={isAddSecretModalOpen}
       >
@@ -256,7 +263,7 @@ export const ManageAgentConfigContainer = ({
         )}
       </Modal>
       <Modal
-        title="Delete Agent"
+        // title="Delete Agent"
         onClose={() => setIsDeleteModalOpen(false)}
         isShown={isDeleteModalOpen}
       >
