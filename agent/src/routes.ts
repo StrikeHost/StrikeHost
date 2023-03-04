@@ -7,6 +7,7 @@ import { StartInstanceHandler } from "./classes/handlers/StartInstanceHandler";
 import { StopInstanceHandler } from "./classes/handlers/StopInstanceHandler";
 import { UpdateAgentHandler } from "./classes/handlers/UpdateAgentHandler";
 import { ServerEventName } from "./interfaces/ServerEvents";
+import { BackupInstanceHandler } from "./classes/handlers/BackupInstanceHandler";
 
 export const initRoutes = () => {
   /**
@@ -23,4 +24,5 @@ export const initRoutes = () => {
   Router.add(ServerEventName.START_INSTANCE, StartInstanceHandler);
   Router.add(ServerEventName.STOP_INSTANCE, StopInstanceHandler);
   Router.add(ServerEventName.DELETE_INSTANCE, DeleteInstanceHandler);
+  Router.add(ServerEventName.BACKUP_INSTANCE, BackupInstanceHandler);
 };

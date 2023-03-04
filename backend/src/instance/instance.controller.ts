@@ -54,4 +54,9 @@ export class InstanceController {
   async StopInstance(@Req() req, @Param('instanceId') instanceId: string) {
     this.instanceService.stopInstance(instanceId, req.user);
   }
+
+  @Post(':instanceId/backup')
+  async BackupInstance(@Req() req, @Param('instanceId') instanceId: string) {
+    return this.instanceService.backupInstance(instanceId, req.user);
+  }
 }

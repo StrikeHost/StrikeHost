@@ -3,6 +3,7 @@ import { AgentInformation } from "./AgentInformation";
 
 export enum ClientEventName {
   SETUP_AGENT = "agent.setup",
+  BACKUP_DONE = "backup.done",
   REGISTER_AGENT = "agent.register",
   INSTANCE_CONSOLE = "instance.console",
   INSTANCE_STATE_CHANGE = "instance.state_change",
@@ -41,4 +42,9 @@ export interface RequestImageListingsEvent extends ClientEvent {}
 export interface InstanceStateChangeEvent extends ClientEvent {
   instanceId: string;
   status: InstanceStatusType;
+}
+
+export interface BackupDoneEvent extends ClientEvent {
+  instanceId: string;
+  backupId: string;
 }

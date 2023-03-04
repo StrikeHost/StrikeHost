@@ -19,6 +19,7 @@ export enum ServerMessageType {
   START_INSTANCE = 'instance.stop',
   STOP_INSTANCE = 'instance.start',
   DELETE_INSTANCE = 'instance.delete',
+  BACKUP_INSTANCE = 'instance.backup',
   PROVISION_INSTANCE = 'instance.provision',
   RELAY_INSTANCE_CONSOLE = 'instance.console',
   REJECT_REGISTER_AGENT = 'agent.reject_register',

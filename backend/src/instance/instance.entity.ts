@@ -64,5 +64,11 @@ export class Instance extends BaseEntity {
   })
   resource_allocation: ResourceAllocation;
 
+  @Column({ default: false })
+  is_backups_enabled: boolean;
+
+  @Column({ nullable: true })
+  last_backup_performed_at?: Date;
+
   detailed_status?: DetailedStatus;
 }

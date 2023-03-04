@@ -1,3 +1,4 @@
+import { v4 as uuid4 } from "uuid";
 import { Readable, Writable } from "stream";
 import { spawn, exec, ChildProcessByStdio, execSync } from "child_process";
 
@@ -135,6 +136,25 @@ export class Process {
    */
   public async kill(): Promise<void> {
     this.childProcess?.kill();
+  }
+
+  /**
+   * Construct a .zip using the files from the instance
+   *
+   * @returns {Promise<string>} The backup id
+   */
+  public async backup(): Promise<string> {
+    const backupId = uuid4().replace(/-/g, "");
+
+    // Fetch files from container
+    const backupArgs = ["docker", "cp", `${this.containerId}:/data`, backupId];
+    execSync(backupArgs.join(" "));
+
+    // Compress files
+    const compressArgs = ["zip", "-r", `${backupId}.zip`, backupId];
+    execSync(compressArgs.join(" "));
+
+    return backupId;
   }
 
   public isRunning() {
