@@ -22,7 +22,7 @@ import { WebsocketModule } from './websocket/websocket.module';
 import { typeOrmAsyncConfig } from './config/typeorm.config';
 import { DiscordModule } from './discord/discord.module';
 import { AppController } from './app/app.controller';
-import { ScheduleModule } from '@nestjs/schedule';
+// import { ScheduleModule } from '@nestjs/schedule';
 import { InstanceBackupModule } from './instance-backup/instance-backup.module';
 
 @Module({
@@ -43,7 +43,7 @@ import { InstanceBackupModule } from './instance-backup/instance-backup.module';
     AdminModule,
     WebsocketModule,
     DiscordModule,
-    ScheduleModule.forRoot(),
+    // ScheduleModule.forRoot(),
     InstanceBackupModule,
   ],
   controllers: [AdminController, AppController],

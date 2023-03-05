@@ -23,7 +23,7 @@ import { Instance } from './instance.entity';
 import { Image } from 'src/image/image.entity';
 import { InstanceRepository } from './instance.repository';
 import { InstanceStatusType } from './enum/InstanceStatusType';
-import { Cron, CronExpression } from '@nestjs/schedule';
+// import { Cron, CronExpression } from '@nestjs/schedule';
 import { UpdateInstanceDto } from './dto/update-instance.dto';
 import { createQueryBuilder } from 'typeorm';
 
@@ -368,25 +368,25 @@ export class InstanceService {
   }
 
   // Backups performed every night at midnight
-  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
-  public async performBackups() {
-    const instances = await this.instanceRepository.find({
-      relations: ['user', 'agent', 'image', 'image.game'],
-      where: {
-        is_backups_enabled: true,
-      },
-    });
+  // @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  // public async performBackups() {
+  //   const instances = await this.instanceRepository.find({
+  //     relations: ['user', 'agent', 'image', 'image.game'],
+  //     where: {
+  //       is_backups_enabled: true,
+  //     },
+  //   });
 
-    // Loop through instances and request that the agent backup the instance
-    instances.forEach((instance) => {
-      const wsClientId = this.websocketService.getAgentClientId(
-        instance.agent.id,
-      );
-      this.websocketService.sendMessage(
-        wsClientId,
-        ServerMessageType.BACKUP_INSTANCE,
-        { instanceId: instance.id },
-      );
-    });
-  }
+  //   // Loop through instances and request that the agent backup the instance
+  //   instances.forEach((instance) => {
+  //     const wsClientId = this.websocketService.getAgentClientId(
+  //       instance.agent.id,
+  //     );
+  //     this.websocketService.sendMessage(
+  //       wsClientId,
+  //       ServerMessageType.BACKUP_INSTANCE,
+  //       { instanceId: instance.id },
+  //     );
+  //   });
+  // }
 }

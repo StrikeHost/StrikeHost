@@ -7,7 +7,6 @@ import {
   Param,
   Post,
   Req,
-  UseGuards,
 } from '@nestjs/common';
 import { InstanceService } from './instance.service';
 import { CreateInstanceDTO } from './dto/create-instance.dto';

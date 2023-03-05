@@ -2,7 +2,7 @@ import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { BackupInstanceEvent } from "../../interfaces/ServerEvents";
 import { Handler } from "./Handler";
 import { v4 as uuid4 } from "uuid";
-import { createReadStream, rmdirSync, stat, statSync, unlinkSync } from "fs";
+import { createReadStream, rmdirSync, statSync, unlinkSync } from "fs";
 import {
   BackupDoneEvent,
   ClientEventName,
