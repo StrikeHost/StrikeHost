@@ -30,4 +30,11 @@ export class UserRepository extends Repository<User> {
     await editedUser.save();
     return editedUser;
   }
+
+  public async verifyEmail(user: User) {
+    user.email_verified_at = new Date();
+
+    await user.save();
+    return user;
+  }
 }

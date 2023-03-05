@@ -8,16 +8,38 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
+import { BypassAuth } from 'src/auth/guards/bypass-auth.decorator';
 
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { getRepository } from 'typeorm';
 import { User } from './user.entity';
+import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
+  constructor(private userService: UserService) {}
+
   @Get()
   async get(@Req() req) {
     return req.user;
+  }
+
+  @Post('confirm')
+  @BypassAuth()
+  async confirmEmail(@Body('token') token: string) {
+    const email = await this.userService.decodeEmailToken(token);
+    const user = await this.userService.confirmEmail(email);
+
+    return user;
+  }
+
+  @Post('verify')
+  async verifyEmail(@Req() req) {
+    const user: User = req.user;
+
+    await this.userService.verifyEmail(user);
+
+    return true; // What should this return?
   }
 
   @Post('account/details')

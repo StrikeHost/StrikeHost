@@ -35,22 +35,25 @@ export class User extends BaseEntity {
   @Column({ default: false })
   admin: boolean;
 
-  @BeforeInsert()
-  hashPassword() {
-    this.password = hashSync(this.password, genSaltSync(10));
-  }
-
   @CreateDateColumn()
   created_at: Date;
 
   @UpdateDateColumn()
   updated_at: Date;
 
+  @Column({ type: 'datetime', nullable: true })
+  email_verified_at: Date;
+
   @OneToMany(() => Instance, (instance) => instance.user)
   instances: Instance[];
 
   @OneToMany(() => ResourceAllocation, (resource) => resource.user)
   resource_allocations: ResourceAllocation[];
+
+  @BeforeInsert()
+  hashPassword() {
+    this.password = hashSync(this.password, genSaltSync(10));
+  }
 
   /**
    * Compare the given password with the user's password.

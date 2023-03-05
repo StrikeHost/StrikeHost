@@ -28,6 +28,8 @@ import { AdminController } from './admin/admin.controller';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { AdminModule } from './admin/admin.module';
+import { BullModule } from '@nestjs/bull';
+import { EmailModule } from './email/email.module';
 import { WebsocketModule } from './websocket/websocket.module';
 import { typeOrmAsyncConfig } from './config/typeorm.config';
 import { DiscordModule } from './discord/discord.module';
@@ -36,6 +38,13 @@ import { AppController } from './app/app.controller';
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    BullModule.forRoot({
+      redis: {
+        host: process.env.REDIS_HOST,
+        password: process.env.REDIS_PASSWORD,
+        port: Number.parseInt(process.env.REDIS_PORT),
+      },
+    }),
     TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
     UserModule,
     AuthModule,
@@ -49,6 +58,7 @@ import { AppController } from './app/app.controller';
     AgentSecretModule,
     EventModule,
     AdminModule,
+    EmailModule,
     WebsocketModule,
     DiscordModule,
   ],

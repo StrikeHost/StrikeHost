@@ -1,5 +1,16 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "sourceRoot": "src",
+  "projects": {
+    "backend": {
+      "type": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "compilerOptions": {
+        "assets": ["**/*.hbs"],
+        "watchAssets": true
+      }
+    }
+  }
 }
