@@ -23,6 +23,9 @@ import { Instance } from './instance.entity';
 import { Image } from 'src/image/image.entity';
 import { InstanceRepository } from './instance.repository';
 import { InstanceStatusType } from './enum/InstanceStatusType';
+// import { Cron, CronExpression } from '@nestjs/schedule';
+import { UpdateInstanceDto } from './dto/update-instance.dto';
+import { createQueryBuilder } from 'typeorm';
 
 @Injectable()
 export class InstanceService {
@@ -71,14 +74,25 @@ export class InstanceService {
   public async getInstance(
     id: string,
     relations?: string[],
+    order?: any,
   ): Promise<Instance> {
-    const instance = await this.instanceRepository.findOne(id, { relations });
-
-    if (!instance) {
-      throw new NotFoundException('Instance not found!');
-    }
-
-    return instance;
+    return createQueryBuilder(Instance, 'instance')
+      .leftJoinAndSelect('instance.user', 'user')
+      .leftJoinAndSelect('instance.agent', 'agent')
+      .leftJoinAndSelect('instance.image', 'image')
+      .leftJoinAndSelect('instance.version', 'version')
+      .leftJoinAndSelect('image.game', 'game')
+      .leftJoinAndSelect('instance.backups', 'backups')
+      .where('instance.id = :id', { id })
+      .groupBy('instance.id')
+      .addGroupBy('user.id')
+      .addGroupBy('agent.id')
+      .addGroupBy('image.id')
+      .addGroupBy('version.id')
+      .addGroupBy('game.id')
+      .addGroupBy('backups.id')
+      .orderBy('backups.created_at', 'DESC')
+      .getOne();
   }
 
   /**
@@ -196,6 +210,11 @@ export class InstanceService {
       ServerMessageType.START_INSTANCE,
       { instance },
     );
+
+    instance.last_started_at = new Date();
+    await instance.save();
+
+    return instance;
   }
 
   /**
@@ -243,6 +262,21 @@ export class InstanceService {
     }
   }
 
+  public async updateInstance(
+    instanceId: string,
+    userId: string,
+    updateInstanceDto: UpdateInstanceDto,
+  ) {
+    const instance = await this.getInstance(instanceId, ['user']);
+
+    if (instance.user.id !== userId) {
+      throw new ForbiddenException();
+    }
+
+    instance.is_backups_enabled = updateInstanceDto.is_backups_enabled;
+    await instance.save();
+  }
+
   /**
    * Registers a change in instance state
    *
@@ -272,6 +306,31 @@ export class InstanceService {
         instanceStateChangeDto,
       );
     }
+  }
+
+  /**
+   * Requests a backup of the specified instance
+   *
+   * @param instanceId
+   * @param user
+   */
+  public async backupInstance(instanceId: string, user: User) {
+    const instance = await this.getInstance(instanceId, ['user', 'agent']);
+
+    if (instance.user.id !== user.id) {
+      throw new ForbiddenException();
+    }
+
+    const wsClientId = this.websocketService.getAgentClientId(
+      instance.agent.id,
+    );
+    this.websocketService.sendMessage(
+      wsClientId,
+      ServerMessageType.BACKUP_INSTANCE,
+      { instanceId: instance.id },
+    );
+
+    console.log('Backup requested for instance', instance.id);
   }
 
   /**
@@ -307,4 +366,27 @@ export class InstanceService {
 
     return toReturn;
   }
+
+  // Backups performed every night at midnight
+  // @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  // public async performBackups() {
+  //   const instances = await this.instanceRepository.find({
+  //     relations: ['user', 'agent', 'image', 'image.game'],
+  //     where: {
+  //       is_backups_enabled: true,
+  //     },
+  //   });
+
+  //   // Loop through instances and request that the agent backup the instance
+  //   instances.forEach((instance) => {
+  //     const wsClientId = this.websocketService.getAgentClientId(
+  //       instance.agent.id,
+  //     );
+  //     this.websocketService.sendMessage(
+  //       wsClientId,
+  //       ServerMessageType.BACKUP_INSTANCE,
+  //       { instanceId: instance.id },
+  //     );
+  //   });
+  // }
 }

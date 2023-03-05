@@ -7,6 +7,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -14,6 +15,7 @@ import {
 import { Agent } from 'src/agent/agent.entity';
 import { ResourceAllocation } from 'src/resource-allocation/resource-allocation.entity';
 import { DetailedStatus } from './DetailedStatus';
+import { InstanceBackup } from 'src/instance-backup/instance-backup.entity';
 
 @Entity()
 export class Instance extends BaseEntity {
@@ -63,6 +65,12 @@ export class Instance extends BaseEntity {
     nullable: false,
   })
   resource_allocation: ResourceAllocation;
+
+  @Column({ default: false })
+  is_backups_enabled: boolean;
+
+  @OneToMany(() => InstanceBackup, (backup) => backup.instance)
+  backups: InstanceBackup[];
 
   detailed_status?: DetailedStatus;
 }

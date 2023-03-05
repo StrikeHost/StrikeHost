@@ -17,7 +17,9 @@ export interface Instance {
   updated_at: Date;
   server_id: string;
   version?: ImageVersion;
+  backups: InstanceBackup[];
   status: InstanceStatusType;
+  is_backups_enabled: boolean;
 }
 
 export interface Agent {
@@ -37,6 +39,14 @@ export interface AgentSecret {
   updated_at: Date;
   disabled_at: Date;
   created_by: User;
+}
+
+export interface InstanceBackup {
+  id: string;
+  size: number;
+  backupId: string;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export enum InstanceStatusType {

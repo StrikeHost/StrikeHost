@@ -2,6 +2,7 @@
 export enum ClientMessageType {
   SETUP_AGENT = 'agent.setup',
   REGISTER_AGENT = 'agent.register',
+  BACKUP_DONE = 'instance.backup.done',
   INSTANCE_CONSOLE = 'instance.console',
   INSTANCE_STATE_CHANGE = 'instance.state_change',
   REQUEST_IMAGE_LISTINGS = 'image.listings.request',
@@ -19,6 +20,7 @@ export enum ServerMessageType {
   START_INSTANCE = 'instance.stop',
   STOP_INSTANCE = 'instance.start',
   DELETE_INSTANCE = 'instance.delete',
+  BACKUP_INSTANCE = 'instance.backup',
   PROVISION_INSTANCE = 'instance.provision',
   RELAY_INSTANCE_CONSOLE = 'instance.console',
   REJECT_REGISTER_AGENT = 'agent.reject_register',

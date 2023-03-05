@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import { CloseButton } from "./CloseButton";
+import { SecondaryText } from "./text/SecondaryText";
 
 export interface ModalProps {
+  title?: string;
   isShown?: boolean;
   className?: string;
   onClose?: () => void;
@@ -9,6 +12,7 @@ export interface ModalProps {
 }
 
 export const Modal = ({
+  title,
   onClose,
   children,
   isShown,
@@ -22,7 +26,15 @@ export const Modal = ({
 
   return (
     <StyledWrapper isShown={isShown} onClick={handleClick}>
-      <StyledModal className={className}>{children}</StyledModal>
+      <StyledModal className={className}>
+        {title && (
+          <StyledTitleRow>
+            <SecondaryText className="mb-2">{title}</SecondaryText>
+            {onClose && <CloseButton onClick={onClose} />}
+          </StyledTitleRow>
+        )}
+        {children}
+      </StyledModal>
     </StyledWrapper>
   );
 };
@@ -46,4 +58,11 @@ const StyledModal = styled.div`
   padding: 1rem;
   cursor: initial;
   background-color: var(--bg-secondary);
+`;
+
+const StyledTitleRow = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
 `;

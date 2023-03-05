@@ -88,6 +88,14 @@ export class Instance {
   }
 
   /**
+   * Creates a backup of the instance
+   */
+  public async backup() {
+    const id = await this.process.backup();
+    return id;
+  }
+
+  /**
    * Updates the instance status
    *
    * @param {InstanceStatusType} status

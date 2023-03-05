@@ -7,11 +7,10 @@ import {
   Param,
   Post,
   Req,
-  UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { CreateInstanceDTO } from './dto/create-instance.dto';
 import { InstanceService } from './instance.service';
+import { CreateInstanceDTO } from './dto/create-instance.dto';
+import { UpdateInstanceDto } from './dto/update-instance.dto';
 
 @Controller('instance')
 export class InstanceController {
@@ -24,13 +23,7 @@ export class InstanceController {
 
   @Get(':instanceId')
   async GetUserInstance(@Req() req, @Param('instanceId') instanceId: string) {
-    const instance = await this.instanceService.getInstance(instanceId, [
-      'user',
-      'agent',
-      'image',
-      'version',
-      'image.game',
-    ]);
+    const instance = await this.instanceService.getInstance(instanceId);
     if (instance.user.id !== req.user.id) {
       throw new ForbiddenException();
     }
@@ -53,5 +46,24 @@ export class InstanceController {
   @HttpCode(200)
   async StopInstance(@Req() req, @Param('instanceId') instanceId: string) {
     this.instanceService.stopInstance(instanceId, req.user);
+  }
+
+  @Post(':instanceId/backup')
+  async BackupInstance(@Req() req, @Param('instanceId') instanceId: string) {
+    return this.instanceService.backupInstance(instanceId, req.user);
+  }
+
+  @Post(':instanceId/update')
+  @HttpCode(200)
+  async UpdateInstance(
+    @Req() req,
+    @Param('instanceId') instanceId: string,
+    @Body() updateInstanceDto: UpdateInstanceDto,
+  ) {
+    return this.instanceService.updateInstance(
+      instanceId,
+      req.user.id,
+      updateInstanceDto,
+    );
   }
 }

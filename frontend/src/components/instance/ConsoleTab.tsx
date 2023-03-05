@@ -4,6 +4,8 @@ import { SocketContext } from "App";
 import { Terminal } from "components/Terminal";
 import { Instance } from "interfaces/Instance";
 import { SocketEvent, SocketEventName } from "interfaces/WebsocketEvents";
+import { Panel } from "components/Panel";
+import { Grid } from "components/Grid";
 
 export interface ConsoleTabProps {
   instance: Instance;
@@ -26,11 +28,17 @@ export const ConsoleTab = () => {
   }, []);
 
   return (
-    <Terminal
-      onTextEntered={() => {
-        // do something
-      }}
-      ref={ref}
-    />
+    <div>
+      <Grid columns={1} className="p-4">
+        <Panel title="Server Console">
+          <Terminal
+            onTextEntered={() => {
+              // do something
+            }}
+            ref={ref}
+          />
+        </Panel>
+      </Grid>
+    </div>
   );
 };

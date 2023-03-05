@@ -14,6 +14,8 @@ import { addInstance } from "redux/actions/InstancesActions";
 import { RootState } from "redux/reducers/RootReducer";
 import { UserState } from "redux/reducers/UserReducer";
 import { InstancesState } from "redux/reducers/InstancesReducer";
+import { PropertiesTab } from "components/instance/PropertiesTab";
+import { BackupsTab } from "components/instance/BackupsTab";
 
 interface InstanceOverviewContainerParams {
   instanceId: string;
@@ -47,12 +49,14 @@ export const InstanceOverviewContainer = connect(mapStateToProps)(
       );
     };
 
+    const refreshInstance = async () => {
+      const instance = await api.get<Instance>(`/instance/${instanceId}`);
+      setInstance(instance.data);
+    };
+
     useEffect(() => {
-      api.get<Instance>(`/instance/${instanceId}`).then((response) => {
-        setInstance(response.data);
-        setIsLoading(false);
-        dispatch(addInstance(response.data));
-      });
+      refreshInstance();
+      setIsLoading(false);
     }, [instance?.id, instanceId]);
 
     return (
@@ -65,11 +69,25 @@ export const InstanceOverviewContainer = connect(mapStateToProps)(
               <DetailedInstancePreview instance={getInstance()} />
               <TabbedContainer
                 id="instance-properties"
-                titles={["Server Details", "Console", "SSH & FTP Access"]}
+                titles={[
+                  "Server Details",
+                  "Console",
+                  "SSH & FTP Access",
+                  "Properties",
+                  "Backups",
+                ]}
               >
                 <DetailsTab />
                 <ConsoleTab />
                 <AccessTab />
+                <PropertiesTab
+                  instance={instance}
+                  onRefresh={() => refreshInstance()}
+                />
+                <BackupsTab
+                  instance={instance}
+                  onRefresh={() => refreshInstance()}
+                />
               </TabbedContainer>
             </>
           )

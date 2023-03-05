@@ -9,6 +9,7 @@ export enum ServerEventName {
   START_INSTANCE = "instance.stop",
   STOP_INSTANCE = "instance.start",
   DELETE_INSTANCE = "instance.delete",
+  BACKUP_INSTANCE = "instance.backup",
   PROVISION_INSTANCE = "instance.provision",
   RELAY_INSTANCE_CONSOLE = "instance.console",
   INSTANCE_STATE_CHANGE = "instance.state_change",
@@ -40,6 +41,10 @@ export interface ProvisionInstanceEvent extends ServerEvent {
 
 export interface DeleteInstanceEvent extends ServerEvent {
   instance: Instance;
+}
+
+export interface BackupInstanceEvent extends ServerEvent {
+  instanceId: string;
 }
 
 export interface RestartAgentEvent extends ServerEvent {}
