@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class InstanceBackupDoneDto {
   @IsString()
@@ -6,4 +6,7 @@ export class InstanceBackupDoneDto {
 
   @IsString()
   backupId: string;
+
+  @IsNumber()
+  size: number;
 }

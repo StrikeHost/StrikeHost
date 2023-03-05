@@ -4,7 +4,7 @@ import { Instance } from "interfaces/Instance";
 import { GameIcon } from "./GameIcon";
 import { InstancePreviewInfoBox } from "./InstancePreviewInfoBox";
 import { InstanceStatusIndicator } from "./InstanceStatusIndicator";
-import { Button } from "react-bootstrap";
+import { Button } from "components/Button";
 import { useStartInstance } from "hooks/useStartInstance";
 import { useStopInstance } from "hooks/useStopInstance";
 
@@ -43,7 +43,11 @@ export const DetailedInstancePreview = ({
             <Button onClick={startInstance} disabled={isStartLoading}>
               Start
             </Button>
-            <Button onClick={stopInstance} disabled={isStopLoading}>
+            <Button
+              variant="danger"
+              onClick={stopInstance}
+              disabled={isStopLoading}
+            >
               Stop
             </Button>
           </StyledButtonsContainer>

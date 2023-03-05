@@ -25,4 +25,7 @@ export class InstanceBackup extends BaseEntity {
 
   @ManyToOne(() => Instance, (instance) => instance.backups)
   instance: Instance;
+
+  @Column()
+  size: number;
 }

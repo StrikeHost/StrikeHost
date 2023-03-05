@@ -2,7 +2,7 @@ import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { BackupInstanceEvent } from "../../interfaces/ServerEvents";
 import { Handler } from "./Handler";
 import { v4 as uuid4 } from "uuid";
-import { createReadStream, rmdirSync, unlinkSync } from "fs";
+import { createReadStream, rmdirSync, stat, statSync, unlinkSync } from "fs";
 import {
   BackupDoneEvent,
   ClientEventName,
@@ -29,10 +29,13 @@ export class BackupInstanceHandler extends Handler {
       Body: fileStream,
     });
 
-    await s3.send(command);
+    const results = await s3.send(command);
     console.log("backup uploaded to S3", event.instanceId);
 
     fileStream.close();
+
+    const details = statSync(localFilename);
+    const size = details.size;
 
     // delete local file
     unlinkSync(localFilename);
@@ -40,6 +43,7 @@ export class BackupInstanceHandler extends Handler {
 
     // send event to server
     const sendEvent: BackupDoneEvent = {
+      size,
       backupId: uuid,
       instanceId: event.instanceId,
       event: ClientEventName.BACKUP_DONE,

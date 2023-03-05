@@ -47,6 +47,7 @@ export class InstanceGateway {
     const backup = new InstanceBackup();
     backup.instance = instance;
     backup.backupId = instanceBackupDoneDto.backupId;
+    backup.size = instanceBackupDoneDto.size;
     backup.save();
 
     // TODO: check if there are more than 4 backups and delete the older ones

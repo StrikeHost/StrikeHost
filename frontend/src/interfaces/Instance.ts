@@ -43,6 +43,7 @@ export interface AgentSecret {
 
 export interface InstanceBackup {
   id: string;
+  size: number;
   backupId: string;
   created_at: Date;
   updated_at: Date;

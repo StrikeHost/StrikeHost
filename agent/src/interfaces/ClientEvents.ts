@@ -47,4 +47,5 @@ export interface InstanceStateChangeEvent extends ClientEvent {
 export interface BackupDoneEvent extends ClientEvent {
   instanceId: string;
   backupId: string;
+  size: number;
 }
