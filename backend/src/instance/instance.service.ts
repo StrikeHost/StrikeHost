@@ -24,6 +24,8 @@ import { Image } from 'src/image/image.entity';
 import { InstanceRepository } from './instance.repository';
 import { InstanceStatusType } from './enum/InstanceStatusType';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { UpdateInstanceDto } from './dto/update-instance.dto';
+import { createQueryBuilder } from 'typeorm';
 
 @Injectable()
 export class InstanceService {
@@ -72,14 +74,25 @@ export class InstanceService {
   public async getInstance(
     id: string,
     relations?: string[],
+    order?: any,
   ): Promise<Instance> {
-    const instance = await this.instanceRepository.findOne(id, { relations });
-
-    if (!instance) {
-      throw new NotFoundException('Instance not found!');
-    }
-
-    return instance;
+    return createQueryBuilder(Instance, 'instance')
+      .leftJoinAndSelect('instance.user', 'user')
+      .leftJoinAndSelect('instance.agent', 'agent')
+      .leftJoinAndSelect('instance.image', 'image')
+      .leftJoinAndSelect('instance.version', 'version')
+      .leftJoinAndSelect('image.game', 'game')
+      .leftJoinAndSelect('instance.backups', 'backups')
+      .where('instance.id = :id', { id })
+      .groupBy('instance.id')
+      .addGroupBy('user.id')
+      .addGroupBy('agent.id')
+      .addGroupBy('image.id')
+      .addGroupBy('version.id')
+      .addGroupBy('game.id')
+      .addGroupBy('backups.id')
+      .orderBy('backups.created_at', 'DESC')
+      .getOne();
   }
 
   /**
@@ -197,6 +210,11 @@ export class InstanceService {
       ServerMessageType.START_INSTANCE,
       { instance },
     );
+
+    instance.last_started_at = new Date();
+    await instance.save();
+
+    return instance;
   }
 
   /**
@@ -242,6 +260,21 @@ export class InstanceService {
         instanceConsoleDto,
       );
     }
+  }
+
+  public async updateInstance(
+    instanceId: string,
+    userId: string,
+    updateInstanceDto: UpdateInstanceDto,
+  ) {
+    const instance = await this.getInstance(instanceId, ['user']);
+
+    if (instance.user.id !== userId) {
+      throw new ForbiddenException();
+    }
+
+    instance.is_backups_enabled = updateInstanceDto.is_backups_enabled;
+    await instance.save();
   }
 
   /**

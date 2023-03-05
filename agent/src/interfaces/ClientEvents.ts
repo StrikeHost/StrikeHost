@@ -3,7 +3,7 @@ import { AgentInformation } from "./AgentInformation";
 
 export enum ClientEventName {
   SETUP_AGENT = "agent.setup",
-  BACKUP_DONE = "backup.done",
+  BACKUP_DONE = "instance.backup.done",
   REGISTER_AGENT = "agent.register",
   INSTANCE_CONSOLE = "instance.console",
   INSTANCE_STATE_CHANGE = "instance.state_change",

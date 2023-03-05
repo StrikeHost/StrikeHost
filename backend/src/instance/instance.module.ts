@@ -10,13 +10,15 @@ import { InstanceService } from './instance.service';
 import { InstanceGateway } from './instance.gateway';
 import { WebsocketModule } from 'src/websocket/websocket.module';
 import { GameRepository } from 'src/game/game.repository';
+import { InstanceBackupRepository } from 'src/instance-backup/instance-backup.repository';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      InstanceRepository,
       GameRepository,
       ImageRepository,
+      InstanceBackupRepository,
+      InstanceRepository,
       ImageVersionRepository,
     ]),
     AgentModule,

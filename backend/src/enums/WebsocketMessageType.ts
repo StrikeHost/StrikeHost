@@ -2,6 +2,7 @@
 export enum ClientMessageType {
   SETUP_AGENT = 'agent.setup',
   REGISTER_AGENT = 'agent.register',
+  BACKUP_DONE = 'instance.backup.done',
   INSTANCE_CONSOLE = 'instance.console',
   INSTANCE_STATE_CHANGE = 'instance.state_change',
   REQUEST_IMAGE_LISTINGS = 'image.listings.request',
