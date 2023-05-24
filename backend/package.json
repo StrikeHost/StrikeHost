@@ -29,7 +29,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^8.2.1",
     "@nestjs/platform-express": "^8.0.0",
-    "@nestjs/platform-socket.io": "^8.4.4",
+    "@nestjs/platform-socket.io": "^9.4.2",
     "@nestjs/typeorm": "^8.0.3",
     "@nestjs/websockets": "^8.4.4",
     "@types/socket.io": "^3.0.2",
