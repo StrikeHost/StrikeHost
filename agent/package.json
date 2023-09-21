@@ -18,7 +18,7 @@
     "public-ip": "^4.0.4",
     "socket.io-client": "^4.3.2",
     "sqlite3": "^5.1.5",
-    "systeminformation": "^5.9.4",
+    "systeminformation": "^5.21.7",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.3",
     "ws": "^8.2.3"
